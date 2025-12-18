@@ -27,23 +27,23 @@ export const processImage = async (fileData: SerializableFile) => {
 			size: fileData.size,
 		});
 
-		// Step 1: Generate descriptions using AI (FIRST - to get title for filename)
-		console.log("[WORKFLOW] Step 1/3: Generating descriptions with Grok");
-		const descriptions = await generateDescription(fileData);
+		// Step 1: Upload image to Blob Storage
+		console.log("[WORKFLOW] Step 1/3: Uploading image");
+		const blob = await uploadImage(fileData);
 		console.log(
-			`[WORKFLOW] Step 1/3 complete. Title: "${descriptions.title}"`,
+			`[WORKFLOW] Step 1/3 complete. Uploaded to ${blob.downloadUrl}`,
 		);
 
-		// Step 2: Upload image to Blob Storage (using title for filename)
-		console.log("[WORKFLOW] Step 2/3: Uploading image");
-		const blob = await uploadImage(fileData, descriptions.title);
+		// Step 2: Generate description using AI
+		console.log("[WORKFLOW] Step 2/3: Generating description");
+		const text = await generateDescription(blob);
 		console.log(
-			`[WORKFLOW] Step 2/3 complete. Uploaded to ${blob.downloadUrl}`,
+			`[WORKFLOW] Step 2/3 complete. Generated ${text.length} characters`,
 		);
 
 		// Step 3: Index in search with metadata
 		console.log("[WORKFLOW] Step 3/3: Indexing in search");
-		await indexImage(blob, descriptions);
+		await indexImage(blob, text);
 		console.log("[WORKFLOW] Step 3/3 complete. Image indexed successfully");
 
 		const workflowDuration = Date.now() - workflowStartTime;
@@ -55,7 +55,6 @@ export const processImage = async (fileData: SerializableFile) => {
 			success: true,
 			pathname: blob.pathname,
 			imageUrl: blob.url,
-			title: descriptions.title,
 			processingTime: workflowDuration,
 		};
 	} catch (error) {

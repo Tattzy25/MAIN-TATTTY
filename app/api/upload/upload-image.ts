@@ -10,61 +10,25 @@ type SerializableFile = {
 	size: number;
 };
 
-/**
- * Converts a title to a URL-safe slug
- * "Eagle Blossom Majesty" -> "eagle-blossom-majesty"
- */
-const slugify = (title: string): string => {
-	return title
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric with hyphens
-		.replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
-};
-
-/**
- * Gets the file extension from the original filename or mime type
- */
-const getExtension = (filename: string, mimeType: string): string => {
-	// Try to get from filename first
-	const extMatch = filename.match(/\.([a-zA-Z0-9]+)$/);
-	if (extMatch) return extMatch[1].toLowerCase();
-
-	// Fallback to mime type
-	const mimeExtensions: Record<string, string> = {
-		"image/jpeg": "jpg",
-		"image/png": "png",
-		"image/gif": "gif",
-		"image/webp": "webp",
-		"image/svg+xml": "svg",
-	};
-	return mimeExtensions[mimeType] || "png";
-};
-
-export const uploadImage = async (fileData: SerializableFile, title: string) => {
+export const uploadImage = async (fileData: SerializableFile) => {
 	"use step";
 
 	const { attempt, stepStartedAt, stepId } = getStepMetadata();
 
-	// Create a descriptive filename from the title
-	// Must use "tattty/" prefix so gallery can find it (load-more-images.ts uses prefix: "tattty/")
-	const slug = slugify(title);
-	const extension = getExtension(fileData.name, fileData.type);
-	const filename = `tattty/${slug}.${extension}`;
-
 	console.log(
 		`[${stepId}] Uploading image (attempt ${attempt})...`,
-		{ originalName: fileData.name, newFilename: filename, title },
+		fileData.name,
 	);
 
 	try {
-		const blob = await put(filename, fileData.buffer, {
+		const blob = await put(fileData.name, fileData.buffer, {
 			access: "public",
-			addRandomSuffix: true, // Still adds random suffix for uniqueness
+			addRandomSuffix: true,
 			contentType: fileData.type,
 		});
 
 		console.log(
-			`[${stepId}] Successfully uploaded image ${filename} at ${stepStartedAt.toISOString()}`,
+			`[${stepId}] Successfully uploaded image ${fileData.name} at ${stepStartedAt.toISOString()}`,
 			blob.url,
 		);
 

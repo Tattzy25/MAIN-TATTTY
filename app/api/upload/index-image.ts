@@ -3,18 +3,17 @@
 import { Search } from "@upstash/search";
 import type { PutBlobResult } from "@vercel/blob";
 import { FatalError, getStepMetadata, RetryableError } from "workflow";
-import type { ImageDescriptions } from "./generate-description";
 
 const upstash = Search.fromEnv();
 
-export const indexImage = async (blob: PutBlobResult, descriptions: ImageDescriptions) => {
+export const indexImage = async (blob: PutBlobResult, text: string) => {
 	"use step";
 
 	const { attempt, stepStartedAt, stepId } = getStepMetadata();
 
 	console.log(
 		`[${stepId}] Indexing image (attempt ${attempt})...`,
-		{ pathname: blob.pathname, title: descriptions.title },
+		blob.downloadUrl,
 	);
 
 	try {
@@ -82,29 +81,15 @@ export const indexImage = async (blob: PutBlobResult, descriptions: ImageDescrip
 
 		const result = await index.upsert({
 			id: blob.pathname,
-			// ALL content fields are indexed and searchable
-			// Users search by descriptions - that's how they find images
-			content: {
-				title: descriptions.title,
-				description: descriptions.shortDescription,
-				longDescription: descriptions.longDescription,
-			},
+			content: { text },
 			metadata: {
-				// Blob data (url, downloadUrl, pathname, etc.)
 				...blob,
-				// Display fields (these match what LightboxItem expects)
-				name: descriptions.title, // Used by lightbox for title display
-				description: descriptions.shortDescription, // Used by lightbox for description
-				// AI-generated descriptions (for future features)
-				longDescription: descriptions.longDescription, // For premium download feature
-				// Tattoo-specific metadata
 				tattooMetadata,
 			},
 		});
 
 		console.log(
 			`[${stepId}] Successfully indexed image at ${stepStartedAt.toISOString()}`,
-			{ title: descriptions.title },
 		);
 
 		return result;
