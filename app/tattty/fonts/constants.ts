@@ -14,15 +14,17 @@ export const FONT_STYLES = [
 export type FontStyle = typeof FONT_STYLES[number];
 
 export const UI_TEXT = {
-  enterTextLabel: "Enter your text",
-  enterTextPlaceholder: "e.g. Family First, 1998, Strength...",
-  selectColorLabel: "Select Ink Color",
-  selectStyleLabel: "Style",
-  selectStylePlaceholder: "Choose a style...",
-  black: "Black Ink",
-  colors: "Color Ink",
-  customizeLabel: "Customize your Fonts",
-  customizePlaceholder: "Thoroughly describe your design (optional)",
-  generateButton: "Generate Lettering",
-  generating: "Generating...",
+  title: "Font Forge",
+  subtitle: "Your words, forged into timeless ink. Precision lettering for the bold.",
+  enterTextLabel: "The Words You Carry",
+  enterTextPlaceholder: "What needs to be written?",
+  selectColorLabel: "Ink Palette",
+  selectStyleLabel: "Calligraphy Style",
+  selectStylePlaceholder: "Choose your script...",
+  black: "Pure Black",
+  colors: "Vivid Color",
+  customizeLabel: "The Soul of the Script",
+  customizePlaceholder: "Describe the weight, the flow, the hidden details...",
+  generateButton: "Forge the Ink",
+  generating: "Forging...",
 } as const;

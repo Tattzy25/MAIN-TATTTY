@@ -11,7 +11,6 @@ import {
 	IconLayout,
 	IconListDetails,
 	IconNetwork,
-	IconPalette,
 	IconSearch,
 	IconSettings,
 	IconTypography,
@@ -111,10 +110,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					<SidebarMenuItem>
 						<SidebarMenuButton
 							asChild
-							className="data-[slot=sidebar-menu-button]:!p-1.5"
+							className="data-[slot=sidebar-menu-button]:p-1.5!"
 						>
 							<a href="/dashboard">
-								<IconInnerShadowTop className="!size-5" />
+								<IconInnerShadowTop className="size-5!" />
 								<span className="font-semibold text-base">Tattty AI</span>
 							</a>
 						</SidebarMenuButton>

@@ -74,7 +74,7 @@ function ImageCard({
 
 				<div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100" />
 
-				<div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+				<div className="absolute right-0 bottom-0 left-0 bg-linear-to-t from-black/80 to-transparent p-2">
 					<div className="flex justify-center gap-1">
 						<TooltipProvider delayDuration={0}>
 							<Tooltip>
@@ -280,10 +280,10 @@ export default function MyTaTTTzPage() {
 		return (
 			<div className="flex flex-1 flex-col space-y-6 p-4 sm:space-y-8 sm:p-6">
 				<div className="space-y-2 sm:space-y-4 text-center">
-					<h1 className="font-[family-name:var(--font-rock-salt)] font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl">
+					<h1 className="font-(family-name:--font-rock-salt) font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl">
 						My TaTTTz
 					</h1>
-					<p className="font-[family-name:var(--font-orbitron)] text-base text-muted-foreground sm:text-lg">
+					<p className="font-(family-name:--font-orbitron) text-base text-muted-foreground sm:text-lg">
 						Loading...
 					</p>
 				</div>
@@ -294,10 +294,10 @@ export default function MyTaTTTzPage() {
 	return (
 		<div className="flex flex-1 flex-col space-y-6 p-4 sm:space-y-8 sm:p-6">
 			<div className="space-y-2 sm:space-y-4 text-center">
-				<h1 className="font-[family-name:var(--font-rock-salt)] font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl">
+				<h1 className="font-(family-name:--font-rock-salt) font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl">
 					My TaTTTz
 				</h1>
-				<p className="font-[family-name:var(--font-orbitron)] text-base text-muted-foreground sm:text-lg">
+				<p className="font-(family-name:--font-orbitron) text-base text-muted-foreground sm:text-lg">
 					your life, your pain, your power, our ink
 				</p>
 			</div>

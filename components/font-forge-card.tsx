@@ -1,198 +1,107 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
+import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group";
-import { cn } from "@/lib/utils";
-import { ChevronDown, Loader2 } from "lucide-react";
-import { FONT_STYLES, UI_TEXT } from "@/app/tattty/fonts/constants";
+import { Loader2, Sparkles, RefreshCcw } from "lucide-react";
+import { UI_TEXT } from "@/app/tattty/fonts/constants";
 import { generateFontAction } from "@/app/actions/generate-font";
 import { useToast } from "@/hooks/use-toast";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { MediaModal } from "@/components/media-modal";
+import { FontVisuals } from "./font-form-sections";
+import { cn } from "@/lib/utils";
 
 export function FontForgeCard() {
-	const [selectedColor, setSelectedColor] = useState<'black' | 'colors'>('black');
-	const [textInput, setTextInput] = useState("");
-	const [selectedStyle, setSelectedStyle] = useState("");
-	const [customizationInput, setCustomizationInput] = useState("");
-	const [isGenerating, setIsGenerating] = useState(false);
-	const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-	const { toast } = useToast();
+  const [text, setText] = useState("");
+  const [color, setColor] = useState<'black' | 'colors'>('black');
+  const [style, setStyle] = useState("");
+  const [customization, setCustomization] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [results, setResults] = useState<string[]>([]);
+  const { toast } = useToast();
 
-	const handleGenerate = async () => {
-		if (!textInput || !selectedStyle) {
-			toast({
-				title: "Missing Information",
-				description: "Please enter text and select a style.",
-				variant: "destructive",
-			});
-			return;
-		}
+  const handleGenerate = async () => {
+    if (!text || !style) return toast({ title: "Missing Info", description: "Text and style required.", variant: "destructive" });
+    setIsGenerating(true); setResults([]);
+    try {
+      const res = await generateFontAction({ text, style, color, customization });
+      if (res.success && Array.isArray(res.output)) {
+        setResults(res.output as string[]);
+        toast({ title: "Success!", description: "Font forged." });
+      } else throw new Error(res.error || "Failed.");
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } finally { setIsGenerating(false); }
+  };
 
-		setIsGenerating(true);
-		setGeneratedImages([]);
-		try {
-			const result = await generateFontAction({
-				text: textInput,
-				style: selectedStyle,
-				color: selectedColor,
-				customization: customizationInput
-			});
+  return (
+    <div className="max-w-5xl mx-auto p-6 sm:p-10 space-y-20 pb-32">
+      <div className="text-center space-y-8">
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          className="text-6xl font-black tracking-tighter sm:text-8xl bg-clip-text text-transparent bg-linear-to-b from-foreground to-foreground/50 uppercase"
+        >
+          {UI_TEXT.title}
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          className="text-muted-foreground text-xl font-medium max-w-2xl mx-auto"
+        >
+          {UI_TEXT.subtitle}
+        </motion.p>
+      </div>
 
-			if (result.success && Array.isArray(result.output)) {
-				setGeneratedImages(result.output as string[]);
-				toast({
-					title: "Success!",
-					description: "Your font has been generated.",
-				});
-			} else {
-				toast({
-					title: "Error",
-					description: result.error || "Failed to generate font.",
-					variant: "destructive",
-				});
-			}
-		} catch (error) {
-			console.error(error);
-			toast({
-				title: "Error",
-				description: "Something went wrong.",
-				variant: "destructive",
-			});
-		} finally {
-			setIsGenerating(false);
-		}
-	};
+      <div className={cn(
+        "grid grid-cols-1 gap-16 items-start transition-all duration-700",
+        results.length > 0 ? "lg:grid-cols-12" : "max-w-3xl mx-auto"
+      )}>
+        <div className={cn(
+          "space-y-12 transition-all duration-700",
+          results.length > 0 ? "lg:col-span-7" : "w-full"
+        )}>
+          <FontVisuals text={text} setText={setText} color={color} setColor={setColor} style={style} setStyle={setStyle} customization={customization} setCustomization={setCustomization} />
+          <Button 
+            className="w-full h-24 text-3xl font-black rounded-4xl uppercase shadow-2xl shadow-primary/20 group bg-primary hover:scale-[1.02] transition-transform" 
+            disabled={isGenerating} 
+            onClick={handleGenerate}
+          >
+            {isGenerating ? (
+              <><Loader2 className="w-8 h-8 animate-spin mr-3" /> {UI_TEXT.generating}</>
+            ) : (
+              <><Sparkles className="w-8 h-8 mr-3" /> {UI_TEXT.generateButton}</>
+            )}
+          </Button>
+        </div>
 
-	return (
-		<div className="flex flex-col items-center w-full gap-8">
-			<Card className="w-full max-w-[500px] min-h-[600px] bg-card text-card-foreground translate-y-0 md:translate-y-[-50px]">
-				<CardContent className="flex flex-col gap-6 p-4 md:gap-8 md:p-6">
-					{/* Row 1: Label and Resizable Textarea */}
-					<div className="flex flex-col gap-2">
-					<label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-						{UI_TEXT.enterTextLabel}
-					</label>
-					<InputGroup>
-						<InputGroupTextarea
-							placeholder={UI_TEXT.enterTextPlaceholder}
-							className="min-h-[80px] max-h-[200px] overflow-y-auto resize-y"
-							value={textInput}
-							onChange={(e) => setTextInput(e.target.value)}
-						/>
-					</InputGroup>
-				</div>
-
-				{/* Row 3: Two Badges Side by Side */}
-				<div className="flex flex-col gap-4 md:gap-6">
-					<label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-						{UI_TEXT.selectColorLabel}
-					</label>
-					<div className="flex w-full gap-4 md:gap-6">
-						<Badge 
-							variant="secondary" 
-							className={cn(
-								"flex-1 h-12 text-base justify-center bg-white text-black hover:bg-white/90 shadow-sm cursor-pointer transition-all",
-								selectedColor === 'black' ? "border-2 border-primary" : "border border-input"
-							)}
-							onClick={() => setSelectedColor('black')}
-						>
-							{UI_TEXT.black}
-						</Badge>
-						<Badge 
-							variant="secondary" 
-							className={cn(
-								"flex-1 h-12 text-base justify-center bg-white text-black hover:bg-white/90 shadow-sm cursor-pointer transition-all",
-								selectedColor === 'colors' ? "border-2 border-primary" : "border border-input"
-							)}
-							onClick={() => setSelectedColor('colors')}
-						>
-							{UI_TEXT.colors}
-						</Badge>
-					</div>
-				</div>
-
-				{/* Row 4: Font Selection Dropdown */}
-				<div className="flex flex-col gap-4 md:gap-6">
-					<label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-						{UI_TEXT.selectStyleLabel}
-					</label>
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" className="w-full justify-between h-12 text-base">
-								{selectedStyle || UI_TEXT.selectStylePlaceholder}
-								<ChevronDown className="ml-2 h-4 w-4 opacity-50" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)]">
-							{FONT_STYLES.map((style) => (
-								<DropdownMenuItem key={style} onClick={() => setSelectedStyle(style)}>
-									{style}
-								</DropdownMenuItem>
-							))}
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
-
-				{/* Row 5: Customization Textarea */}
-				<div className="flex flex-col gap-4 md:gap-6">
-					<label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-						{UI_TEXT.customizeLabel}
-					</label>
-					<InputGroup>
-						<InputGroupTextarea
-							placeholder={UI_TEXT.customizePlaceholder}
-							className="min-h-[80px] max-h-[200px] overflow-y-auto resize-y"
-							value={customizationInput}
-							onChange={(e) => setCustomizationInput(e.target.value)}
-						/>
-					</InputGroup>
-				</div>
-
-				{/* Row 6: Generate Button */}
-				<Button 
-					className="w-full h-12 text-lg font-bold" 
-					onClick={handleGenerate}
-					disabled={isGenerating}
-				>
-					{isGenerating ? (
-						<>
-							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-							{UI_TEXT.generating}
-						</>
-					) : (
-						UI_TEXT.generateButton
-					)}
-				</Button>
-			</CardContent>
-		</Card>
-
-		{/* Results Grid - Outside the card for breathing room */}
-		{generatedImages.length > 0 && (
-			<div className="w-full max-w-[1000px] animate-in fade-in slide-in-from-bottom-4 duration-700">
-				<div className="grid grid-cols-2 gap-4">
-					{generatedImages.map((imageUrl, index) => (
-						<div 
-							key={index} 
-							className="rounded-xl overflow-hidden border bg-card shadow-sm"
-						>
-							<AspectRatio ratio={1}>
-								<MediaModal imgSrc={imageUrl} />
-							</AspectRatio>
-						</div>
-					))}
-				</div>
-			</div>
-		)}
-	</div>
-	);
+        {results.length > 0 && (
+          <div className="lg:col-span-5 space-y-8 sticky top-8">
+            <AnimatePresence>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+                animate={{ opacity: 1, scale: 1, y: 0 }} 
+                className="space-y-6"
+              >
+                <div className="grid grid-cols-1 gap-6">
+                  {results.map((img) => (
+                    <div key={img} className="relative aspect-square rounded-[3rem] overflow-hidden border-12 border-muted shadow-2xl ring-1 ring-border">
+                      <MediaModal imgSrc={img} />
+                    </div>
+                  ))}
+                </div>
+                <Button 
+                  variant="outline" 
+                  className="w-full h-16 rounded-2xl font-black uppercase tracking-widest text-lg" 
+                  onClick={() => setResults([])}
+                >
+                  <RefreshCcw className="w-5 h-5 mr-3" /> New Forge
+                </Button>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

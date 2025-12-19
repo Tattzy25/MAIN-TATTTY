@@ -9,8 +9,6 @@ import {
 	CartesianGrid,
 	Cell,
 	Legend,
-	Line,
-	LineChart,
 	Pie,
 	PieChart,
 	ResponsiveContainer,
@@ -333,7 +331,7 @@ export default function AdminPanel() {
 
 	return (
 		<div className="flex h-[calc(100svh-var(--header-height))] flex-1 flex-col overflow-hidden md:h-[calc(100svh-var(--header-height)-1rem)]">
-			<div className="h-full overflow-y-auto bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950">
+			<div className="h-full overflow-y-auto bg-linear-to-b from-zinc-950 via-zinc-900 to-zinc-950">
 				<div className="px-4 py-4 sm:px-6 lg:px-8">
 					<div className="mx-auto max-w-7xl">
 						{/* Header */}
