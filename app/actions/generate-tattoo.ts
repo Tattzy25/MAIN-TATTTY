@@ -14,15 +14,15 @@ export async function generateTattoo(prompt: string, aspectRatio: string = "1:1"
 
   console.log("🚀 Tattty Generation started with prompt:", prompt);
 
+  const fullPrompt = `${prompt}, white background`;
+
   try {
-    console.log("⏳ Creating Replicate Prediction...");
-    
-    // Using the specific model version for Tattty
-    const prediction = await replicate.predictions.create({
-      version: "4e8f6c1dc77db77dabaf98318cde3679375a399b434ae2db0e698804ac84919c",
+    console.log("⏳ Running Replicate model...");
+
+    const output = await replicate.run("tattzy25/tattty_4_all:4e8f6c1dc77db77dabaf98318cde3679375a399b434ae2db0e698804ac84919c", {
       input: {
         model: "dev",
-        prompt: prompt, // The prompt from Baddie
+        prompt: fullPrompt, // The prompt from Baddie with white background
         go_fast: false,
         lora_scale: 1,
         megapixels: "1",
@@ -38,28 +38,53 @@ export async function generateTattoo(prompt: string, aspectRatio: string = "1:1"
       },
     });
 
-    console.log("⏳ Prediction created, polling for results...", prediction.id);
+    console.log("✅ Generation succeeded:", output);
 
-    let finalPrediction = prediction;
-    while (
-      finalPrediction.status !== "succeeded" &&
-      finalPrediction.status !== "failed" &&
-      finalPrediction.status !== "canceled"
-    ) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      finalPrediction = await replicate.predictions.get(finalPrediction.id);
-    }
-
-    if (finalPrediction.status === "succeeded") {
-      console.log("✅ Prediction succeeded:", finalPrediction.output);
-      return { success: true, output: finalPrediction.output };
+    // Handle Replicate output - could be URL array or stream
+    let finalOutput: string = '';
+    if (Array.isArray(output)) {
+      const item = output[0];
+      if (typeof item === 'object' && 'url' in item && typeof item.url === 'function') {
+        finalOutput = item.url().toString();
+      } else if (typeof item === 'string') {
+        finalOutput = item;
+      } else {
+        finalOutput = String(item);
+      }
+    } else if (typeof output === 'object' && 'url' in output && typeof output.url === 'function') {
+      finalOutput = output.url().toString();
+    } else if (typeof output === 'string') {
+      finalOutput = output;
+    } else if (output instanceof ReadableStream) {
+      // Convert stream to data URL
+      const chunks: Uint8Array[] = [];
+      const reader = output.getReader();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+      }
+      const buffer = Buffer.concat(chunks);
+      const base64 = buffer.toString('base64');
+      finalOutput = `data:image/webp;base64,${base64}`;
     } else {
-      console.error("❌ Prediction failed:", finalPrediction.error);
-      return { success: false, error: "Prediction failed: " + finalPrediction.error };
+      finalOutput = String(output);
     }
 
-  } catch (error) {
+    return { success: true, output: finalOutput };
+
+  } catch (error: any) {
     console.error("❌ Error generating tattoo:", error);
-    return { success: false, error: "Failed to generate tattoo" };
+    const errorMessage = error?.message || "Unknown error";
+    if (errorMessage.includes("API token")) {
+      return { success: false, error: "🚨 REPLICATE API TOKEN INVALID! Check your .env.local file for REPLICATE_API_TOKEN." };
+    }
+    if (errorMessage.includes("model")) {
+      return { success: false, error: "🚨 TATTTY MODEL UNAVAILABLE! Check Replicate for model status." };
+    }
+    if (errorMessage.includes("rate limit")) {
+      return { success: false, error: "🚨 REPLICATE RATE LIMIT EXCEEDED! Try again later." };
+    }
+    return { success: false, error: `🚨 TATTTY GENERATION FAILED: ${errorMessage}. Check API token and model.` };
   }
 }

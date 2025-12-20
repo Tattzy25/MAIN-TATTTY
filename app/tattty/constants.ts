@@ -96,8 +96,7 @@ export const QUESTIONS = [
 export const UI_TEXT = {
   title: "Tattty",
   subtitle: "Deep Ink, No Data. Your story, translated into art.",
-  generateButton: "Activate Baddie & Ink",
+  generateButton: "Get Me Inked",
   generating: "Baddie is thinking...",
   inking: "Tattty is inking...",
 } as const;
-

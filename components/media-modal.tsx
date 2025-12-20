@@ -59,7 +59,7 @@ export function MediaModal({ imgSrc, videoSrc, className }: IMediaModal) {
           >
             <img
               src={imgSrc}
-              alt='A desk lamp designed by Edouard Wilfrid Buquet in 1925. It features a double-arm design and is made from nickel-plated brass, aluminium and varnished wood.'
+              alt='Generated Tattoo'
               className=' w-full object-cover h-full'
             />
           </motion.div>
@@ -107,7 +107,7 @@ export function MediaModal({ imgSrc, videoSrc, className }: IMediaModal) {
                 <motion.div
                   className={cn(
                     'relative flex flex-col overflow-hidden dark:bg-gray-950 bg-gray-200 border shadow-2xl',
-                    'h-[70vh] w-auto aspect-square max-w-[90vw]',
+                    'max-w-[90vw] max-h-[70vh] w-auto h-auto',
                     imgSrc && 'cursor-zoom-out'
                   )}
                   layoutId={`dialog-${uniqueId}`}
