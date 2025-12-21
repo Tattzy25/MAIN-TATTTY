@@ -3,7 +3,11 @@
 import { Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import type { Suggestion } from "@/lib/suggestions";
+
+interface Suggestion {
+	text: string;
+	prompt: string;
+}
 
 interface PromptSuggestionsProps {
 	suggestions: Suggestion[];

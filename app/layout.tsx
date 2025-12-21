@@ -38,7 +38,7 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-	title: "OPS.TaTTTy",
+	title: "TaTTTy",
 	description: "AI-powered image management platform with semantic search",
 	metadataBase: new URL('https://tattty.com'),
 };

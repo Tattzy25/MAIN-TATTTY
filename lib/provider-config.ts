@@ -34,10 +34,10 @@ export const PROVIDERS: Record<
 
 export const MODEL_CONFIGS: Record<ModelMode, Record<ProviderKey, string>> = {
 	performance: {
-		replicate: "stability-ai/stable-diffusion-3.5-large-turbo",
+		replicate: "black-forest-labs/flux-2-pro",
 	},
 	quality: {
-		replicate: "stability-ai/stable-diffusion-3.5-large",
+		replicate: "black-forest-labs/flux-2-pro",
 	},
 };
 

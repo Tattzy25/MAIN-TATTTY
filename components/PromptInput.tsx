@@ -2,8 +2,10 @@
 
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group";
+import { cn } from "@/lib/utils";
 
 type QualityMode = "performance" | "quality";
 
@@ -21,7 +23,7 @@ interface PromptInputProps {
 	suggestions?: Suggestion[];
 }
 
-export function PromptInput({ isLoading, onSubmit }: PromptInputProps) {
+export function PromptInput({ isLoading, onSubmit, mode, onModeChange }: PromptInputProps) {
 	const [input, setInput] = useState("");
 
 	const handleSubmit = () => {

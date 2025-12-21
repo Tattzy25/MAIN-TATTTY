@@ -48,8 +48,8 @@ const data = {
 			icon: IconBrain,
 		},
 		{
-			title: "Agents",
-			url: "/tattty/agents",
+			title: "Couples TaTTTz",
+			url: "/tattty/couples-tatttz",
 			icon: IconNetwork,
 		},
 		{
@@ -87,11 +87,6 @@ const data = {
 		{
 			title: "Settings",
 			url: "/tattty/settings",
-			icon: IconSettings,
-		},
-		{
-			title: "Admin",
-			url: "/tattty/admin",
 			icon: IconSettings,
 		},
 		{

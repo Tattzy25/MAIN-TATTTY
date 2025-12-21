@@ -13,8 +13,11 @@ import {
 	PROVIDERS,
 	type ProviderKey,
 } from "@/lib/provider-config";
-import type { Suggestion } from "@/lib/suggestions";
 import { Header } from "./Header";
+
+interface Suggestion {
+	text: string;
+}
 
 export function ImagePlayground({
 	suggestions,

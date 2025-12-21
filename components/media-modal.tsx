@@ -107,7 +107,7 @@ export function MediaModal({ imgSrc, videoSrc, className }: IMediaModal) {
                 <motion.div
                   className={cn(
                     'relative flex flex-col overflow-hidden dark:bg-gray-950 bg-gray-200 border shadow-2xl',
-                    'max-w-[90vw] max-h-[70vh] w-auto h-auto',
+                    'max-w-[98vw] max-h-[95vh] w-auto h-auto',
                     imgSrc && 'cursor-zoom-out'
                   )}
                   layoutId={`dialog-${uniqueId}`}
@@ -126,7 +126,7 @@ export function MediaModal({ imgSrc, videoSrc, className }: IMediaModal) {
                       <img
                         src={imgSrc}
                         alt=''
-                        className='h-full w-full object-cover'
+                        className='h-full w-full object-contain bg-black/5 dark:bg-black/50'
                       />
                     </motion.div>
                   )}

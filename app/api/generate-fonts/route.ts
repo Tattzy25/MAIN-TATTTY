@@ -1,24 +1,27 @@
-import { openai } from "@ai-sdk/openai";
+import { createOpenAI } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import { type NextRequest, NextResponse } from "next/server";
+import { getSettings } from "@/app/actions/settings";
 
-const TIMEOUT_MILLIS = 55 * 1000;
-
-const withTimeout = <T>(
-	promise: Promise<T>,
-	timeoutMillis: number,
-): Promise<T> =>
-	Promise.race([
+// Helper for timeouts
+const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
+	return Promise.race([
 		promise,
 		new Promise<T>((_, reject) =>
-			setTimeout(() => reject(new Error("Request timed out")), timeoutMillis),
+			setTimeout(() => reject(new Error("Timeout")), ms),
 		),
 	]);
+};
+
+const TIMEOUT_MILLIS = 30000; // 30 seconds
 
 export async function POST(req: NextRequest) {
 	const requestId = Math.random().toString(36).substring(7);
 
 	try {
+        const settings = await getSettings();
+        const apiKey = settings.providers.openai.apiKey || process.env.OPENAI_API_KEY;
+
 		const { text, style } = await req.json();
 
 		if (!text || typeof text !== "string") {
@@ -38,8 +41,12 @@ Original text: "${text}"`;
 
 		const startstamp = performance.now();
 
+        const customOpenAI = createOpenAI({
+            apiKey: apiKey,
+        });
+
 		const generatePromise = generateText({
-			model: openai("gpt-4o-mini"),
+			model: customOpenAI("gpt-4o-mini"),
 			prompt,
 		}).then((result) => {
 			console.log(

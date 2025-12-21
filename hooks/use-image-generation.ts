@@ -19,6 +19,7 @@ interface UseImageGenerationReturn {
 		prompt: string,
 		providers: ProviderKey[],
 		providerToModel: Record<ProviderKey, string>,
+		files?: File[] | null,
 	) => Promise<void>;
 	resetState: () => void;
 	activePrompt: string;
@@ -46,6 +47,7 @@ export function useImageGeneration(): UseImageGenerationReturn {
 		prompt: string,
 		providers: ProviderKey[],
 		providerToModel: Record<ProviderKey, string>,
+		files?: File[] | null,
 	) => {
 		setActivePrompt(prompt);
 		try {
@@ -78,17 +80,38 @@ export function useImageGeneration(): UseImageGenerationReturn {
 					`Generate image request [provider=${provider}, modelId=${modelId}]`,
 				);
 				try {
-					const request = {
-						prompt,
-						provider,
-						modelId,
-					};
+					let response: Response;
+					
+					if (files && files.length > 0) {
+						// Use customize-image endpoint for image-to-image generation
+						const formData = new FormData();
+						formData.append("prompt", prompt);
+						formData.append("provider", provider);
+						formData.append("modelId", modelId);
+						
+						files.forEach((file, index) => {
+							formData.append(`image_${index}`, file);
+						});
 
-					const response = await fetch("/api/generate-images", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(request),
-					});
+						response = await fetch("/api/customize-image", {
+							method: "POST",
+							body: formData,
+						});
+					} else {
+						// Use standard text-to-image endpoint
+						const request = {
+							prompt,
+							provider,
+							modelId,
+						};
+
+						response = await fetch("/api/generate-images", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify(request),
+						});
+					}
+
 					const data = await response.json();
 					if (!response.ok) {
 						throw new Error(data.error || `Server error: ${response.status}`);

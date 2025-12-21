@@ -35,7 +35,7 @@ export const LAYOUT_STYLES = {
 
 	/** Image box - mobile first (smaller height on mobile) */
 	imageBox:
-		"relative h-[300px] w-full rounded-lg bg-zinc-50 shadow-lg sm:h-[400px] md:h-[450px] lg:h-[500px]",
+		"relative h-[300px] w-full rounded-lg bg-muted shadow-lg sm:h-[400px] md:h-[450px] lg:h-[500px]",
 
 	/** Prompt display */
 	promptDisplay: "mt-6 text-center text-muted-foreground sm:mt-8",

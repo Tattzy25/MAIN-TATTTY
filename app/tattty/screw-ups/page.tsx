@@ -16,7 +16,7 @@ export default function Page() {
 	const [style, setStyle] = useState(STYLES[0].id);
 	const [aspectRatio, setAspectRatio] = useState("1:1");
 	const [isGenerating, setIsGenerating] = useState(false);
-	const [result, setResult] = useState<string | null>(null);
+	const [result, setResult] = useState<string | string[] | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
 	const handleSubmit = async () => {
@@ -125,9 +125,19 @@ export default function Page() {
 
 						<div className={LAYOUT_STYLES.imageWrapper}>
 							{result ? (
-								<div className="relative max-w-2xl mx-auto rounded-[3rem] overflow-hidden border-16 border-muted shadow-2xl ring-2 ring-border">
-									<MediaModal imgSrc={result} />
-								</div>
+								Array.isArray(result) ? (
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto px-4">
+										{result.map((img, idx) => (
+											<div key={idx} className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-8 sm:border-12 lg:border-16 border-muted shadow-2xl ring-1 sm:ring-2 ring-border">
+												<MediaModal imgSrc={img} />
+											</div>
+										))}
+									</div>
+								) : (
+									<div className="relative max-w-2xl mx-auto rounded-[3rem] overflow-hidden border-16 border-muted shadow-2xl ring-2 ring-border">
+										<MediaModal imgSrc={result as string} />
+									</div>
+								)
 							) : null}
 						</div>
 					</div>

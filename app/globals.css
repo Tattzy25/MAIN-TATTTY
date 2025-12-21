@@ -274,17 +274,17 @@
   }
 }
 
-/* Text inputs - white text */
+/* Text inputs - use theme foreground */
 textarea,
 input[type="text"],
 input[type="email"],
 input[type="search"],
 input[type="number"] {
-  color: white;
+  color: var(--foreground);
 }
 
-/* Placeholders - muted color */
+/* Placeholders - use theme muted foreground */
 textarea::placeholder,
 input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--muted-foreground);
 }

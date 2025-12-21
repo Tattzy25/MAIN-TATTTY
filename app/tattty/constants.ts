@@ -93,20 +93,28 @@ export type Mood = typeof MOODS[number];
 export const QUESTIONS = [
   {
     id: "pain",
-    question: "What is the pain you carry that made you who you are?",
-    placeholder: "Speak your truth... it stays between us.",
+    question: "What personal experience has shaped you the most?",
+    placeholder: "Share your experience here...",
   },
   {
     id: "memory",
-    question: "What is the one memory you would bleed to keep?",
-    placeholder: "The moment that defined your soul...",
+    question: "What is your most cherished memory?",
+    placeholder: "Describe a memory that is important to you...",
   },
 ] as const;
 
 export const UI_TEXT = {
   title: "Tattty",
-  subtitle: "Deep Ink, No Data. Your story, translated into art.",
-  generateButton: "Get Me Inked",
-  generating: "Baddie is thinking...",
-  inking: "Tattty is inking...",
+  subtitle: "Create unique tattoos based on your story.",
+  generateButton: "Create Tattoo",
+  generating: "Generating prompt...",
+  inking: "Creating tattoo...",
+} as const;
+
+export const COUPLES_UI_TEXT = {
+  title: "Couples TaTTTz 💑",
+  inputPlaceholder: "Enter your prompt here",
+  buttonText: "CREATE MY UNIQUE TAT",
+  loadingText: "INKING...",
+  promptLabel: "Current prompt:",
 } as const;
