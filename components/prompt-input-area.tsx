@@ -38,7 +38,7 @@ export function PromptInputArea({
   const renderMaxBadge = () => (
     <div className="flex h-[14px] items-center gap-1.5 rounded border border-border px-1 py-0">
       <span
-        className="text-[9px] font-bold uppercase"
+        className="text-[10px] font-bold uppercase"
         style={{
           background:
             "linear-gradient(to right, rgb(129, 161, 193), rgb(125, 124, 155))",
@@ -52,13 +52,13 @@ export function PromptInputArea({
   );
 
   return (
-    <div className="flex flex-col gap-4 w-[calc(42rem-5rem)]">
+    <div className="flex flex-col gap-4 w-full max-w-2xl">
       <div className="flex flex-wrap justify-center gap-2">
         {suggestions.map((suggestion, index) => (
           <Button
             key={index}
             variant="ghost"
-            className="group flex items-center gap-2 rounded-full border px-3 py-2 text-sm text-foreground transition-all duration-200 hover:bg-muted/30 h-auto bg-transparent dark:bg-muted"
+            className="group flex items-center gap-2 rounded-full border px-3 py-2 text-base text-foreground transition-all duration-200 hover:bg-muted/30 h-auto bg-transparent dark:bg-muted"
           >
             {suggestion.icon}
             <span>{suggestion.text}</span>
@@ -75,13 +75,13 @@ export function PromptInputArea({
         </div>
 
         <div className="flex min-h-[40px] items-center gap-2 p-2 pb-1">
-          <div className="flex aspect-1 items-center gap-1 rounded-full bg-muted p-1.5 text-xs">
+          <div className="flex aspect-1 items-center gap-1 rounded-full bg-muted p-1.5 text-sm">
             <IconCloud className="h-4 w-4 text-muted-foreground" />
           </div>
 
           <div className="relative flex items-center">
             <Select defaultValue="placeholder">
-              <SelectTrigger className="w-fit border-none bg-transparent! p-0 text-sm text-muted-foreground hover:text-foreground focus:ring-0 shadow-none">
+              <SelectTrigger className="w-fit border-none bg-transparent! p-0 text-base text-muted-foreground hover:text-foreground focus:ring-0 shadow-none">
                 <SelectValue>
                   <div className="flex items-center gap-1">
                     <span>{modelName}</span>
@@ -95,7 +95,7 @@ export function PromptInputArea({
                     <span>{modelName}</span>
                     {renderMaxBadge()}
                   </div>
-                  <span className="text-muted-foreground block text-xs">
+                  <span className="text-muted-foreground block text-sm">
                     {modelDescription}
                   </span>
                 </SelectItem>

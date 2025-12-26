@@ -38,7 +38,7 @@ export function NavMain({
 				>
 					<Link href="/tattty/quick-ideas" onClick={() => isMobile && setOpenMobile(false)}>
 						<IconCirclePlusFilled />
-						<span>Quick Ideas</span>
+						<span className="text-lg">Quick Ideas</span>
 					</Link>
 				</SidebarMenuButton>
 						<Button
@@ -64,7 +64,7 @@ export function NavMain({
 									onClick={() => isMobile && setOpenMobile(false)}
 								>
 									{item.icon && <item.icon />}
-									<span>{item.title}</span>
+									<span className="text-lg">{item.title}</span>
 								</Link>
 							</SidebarMenuButton>
 						</SidebarMenuItem>

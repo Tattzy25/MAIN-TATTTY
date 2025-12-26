@@ -42,7 +42,7 @@ export function NavSecondary({
 									onClick={() => isMobile && setOpenMobile(false)}
 								>
 									<item.icon />
-									<span>{item.title}</span>
+									<span className="text-lg">{item.title}</span>
 								</Link>
 							</SidebarMenuButton>
 						</SidebarMenuItem>

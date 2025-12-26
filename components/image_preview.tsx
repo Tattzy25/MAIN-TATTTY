@@ -31,6 +31,7 @@ export default function ImagePreview({
         height={height}
         className={className}
         onClick={() => setIsOpen(true)}
+        loading="lazy"
       />
 
       <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -45,13 +46,24 @@ export default function ImagePreview({
               <X className="h-6 w-6" />
               <span className="sr-only">Close</span>
             </button>
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full flex items-center justify-center">
+              {/* Low-res placeholder (matches thumbnail to hit browser cache) */}
+              <Image
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                className="absolute inset-0 w-full h-full object-contain opacity-50"
+                aria-hidden="true"
+              />
+              {/* High-res image */}
               <Image
                 src={src}
                 alt={alt}
                 width={width * 2}
                 height={height * 2}
-                className="object-contain rounded-lg"
+                className="object-contain rounded-lg relative z-10"
+                priority
               />
             </div>
           </DialogPrimitive.Content>

@@ -58,9 +58,10 @@ const data = {
 			url: "/tattty/couples-tatttz",
 			icon: IconNetwork,
 		},
-
+	],
+	navProjects: [
 		{
-			title: "Gallery",
+			title: "Inspirations",
 			url: "/tattty/gallery",
 			icon: IconListDetails,
 		},
@@ -94,9 +95,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 							asChild
 							className="data-[slot=sidebar-menu-button]:p-1.5!"
 						>
-							<a href="/dashboard">
+							<a href="/tattty/quick-ideas">
 								<IconInnerShadowTop className="size-5!" />
-								<span className="font-semibold text-base">Tattty AI</span>
+								<span className="font-semibold text-lg">Tattty AI</span>
 							</a>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
@@ -104,6 +105,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />
+				<div className="h-8" />
+				<NavSecondary items={data.navProjects} />
 				<NavSecondary className="mt-auto" items={data.navSecondary} />
 			</SidebarContent>
 			<SidebarFooter>
