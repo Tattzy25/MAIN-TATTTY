@@ -3,13 +3,9 @@
 import { useWordCarousel } from "@/lib/use-word-carousel";
 import { TATTTY_UI_TEXT } from "@/app/tattty/constants";
 import { ReusableScrollArea } from "@/components/reusable-scroll-area";
+import { TextWordCarousel } from "@/components/word-carousel";
 
 export default function Ai02() {
-  const { currentWord } = useWordCarousel({ 
-    words: TATTTY_UI_TEXT.carouselWords, 
-    interval: 2 
-  });
-
   return (
     <div className="flex flex-col items-center p-4 sm:p-8 gap-24">
       <div className="flex flex-col items-center">
@@ -18,14 +14,19 @@ export default function Ai02() {
         </h2>
         <p className="text-2xl sm:text-4xl lg:text-5xl font-semibold text-muted-foreground space-x-2 mt-8">
           <span>Your</span>
-          <span className="text-white font-bold">{currentWord}</span>
+          <TextWordCarousel 
+            words={TATTTY_UI_TEXT.carouselWords} 
+            interval={2}
+            duration={0.3}
+            className="text-white font-bold"
+          />
           <span>Our Ink</span>
         </p>
       </div>
 
       <div className="flex gap-12 w-full justify-center items-stretch">
-        <ReusableScrollArea items={11} label="Your Style" />
-        <ReusableScrollArea items={11} label="Your Colors" />
+        <ReusableScrollArea items={11} label="Styles" />
+        <ReusableScrollArea items={11} label="Collors" />
       </div>
     </div>
   );

@@ -19,8 +19,16 @@ export function TextWordCarousel({
   ...props
 }: TextWordCarouselProps) {
   const { currentWord, key } = useWordCarousel({ words, interval });
+  const longestWord = React.useMemo(
+    () => words.reduce((a, b) => (a.length > b.length ? a : b), ""),
+    [words]
+  );
+
   return (
-    <span className={cn("inline-block relative", className)}>
+    <span className={cn("inline-grid relative text-center", className)}>
+      {/* Invisible spacer to reserve width */}
+      <span className="invisible col-start-1 row-start-1">{longestWord}</span>
+      
       <AnimatePresence mode="wait">
         <motion.span
           key={key}
@@ -28,7 +36,7 @@ export function TextWordCarousel({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration }}
-          className="inline-block"
+          className="col-start-1 row-start-1 inline-block"
           {...props}
         >
           {currentWord}
