@@ -44,8 +44,13 @@ const data = {
 			icon: IconSparkles,
 		},
 		{
-			title: "Screw Ups",
-			url: "/tattty/screw-ups",
+			title: "Imagine Fonts",
+			url: "/tattty/fonts",
+			icon: IconTypography,
+		},
+		{
+			title: "Ink Redemption",
+			url: "/tattty/ink-redemption",
 			icon: IconBrain,
 		},
 		{
@@ -63,11 +68,6 @@ const data = {
 			title: "My TaTTTz",
 			url: "/my-tatttz",
 			icon: IconChartBar,
-		},
-		{
-			title: "Fonts",
-			url: "/tattty/fonts",
-			icon: IconTypography,
 		},
 	],
 	navSecondary: [

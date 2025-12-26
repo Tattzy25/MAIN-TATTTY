@@ -129,3 +129,36 @@ export const QUICK_IDEAS_UI_TEXT = {
   title: "Quick Ideas",
   description: "Get inspired with quick tattoo ideas and creative concepts. Explore different styles and find your perfect design.",
 } as const;
+
+export const INK_REDEMPTION_UI_TEXT = {
+  title: "INK REDEMPTION",
+  description: "Salvage your skin. Whether it's a cover-up or finishing what was started, turn your regrets into redemption.",
+} as const;
+
+export const INK_REDEMPTION_SUGGESTIONS = [
+  { icon: "🩹", text: "Cover up a name" },
+  { icon: "🔄", text: "Redesign an old tattoo" },
+  { icon: "✨", text: "Enhance a faded design" },
+];
+
+export const COUPLES_PAGE_UI_TEXT = {
+  title: "Couples Tatts",
+  description: "Design matching tattoos that tell your unique love story. Perfect for partners and best friends.",
+} as const;
+
+export const COUPLES_SUGGESTIONS = [
+  { icon: "❤️", text: "Matching hearts" },
+  { icon: "🧩", text: "Puzzle pieces" },
+  { icon: "🔒", text: "Lock and key" },
+];
+
+export const FONTS_UI_TEXT = {
+  title: "IMAGINE FONTS",
+  description: "Explore unique typography and lettering styles for your next text-based tattoo.",
+} as const;
+
+export const FONTS_SUGGESTIONS = [
+  { icon: "✍️", text: "Calligraphy style" },
+  { icon: "🔡", text: "Old English font" },
+  { icon: "🖊️", text: "Minimalist script" },
+];

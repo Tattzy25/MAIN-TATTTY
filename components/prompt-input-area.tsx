@@ -53,6 +53,19 @@ export function PromptInputArea({
 
   return (
     <div className="flex flex-col gap-4 w-[calc(42rem-5rem)]">
+      <div className="flex flex-wrap justify-center gap-2">
+        {suggestions.map((suggestion, index) => (
+          <Button
+            key={index}
+            variant="ghost"
+            className="group flex items-center gap-2 rounded-full border px-3 py-2 text-sm text-foreground transition-all duration-200 hover:bg-muted/30 h-auto bg-transparent dark:bg-muted"
+          >
+            {suggestion.icon}
+            <span>{suggestion.text}</span>
+          </Button>
+        ))}
+      </div>
+
       <div className="flex min-h-[120px] flex-col rounded-2xl cursor-text bg-card border border-border shadow-lg">
         <div className="flex-1 relative overflow-y-auto max-h-[258px]">
           <Textarea
@@ -111,19 +124,6 @@ export function PromptInputArea({
             </Button>
           </div>
         </div>
-      </div>
-
-      <div className="flex flex-wrap justify-center gap-2">
-        {suggestions.map((suggestion, index) => (
-          <Button
-            key={index}
-            variant="ghost"
-            className="group flex items-center gap-2 rounded-full border px-3 py-2 text-sm text-foreground transition-all duration-200 hover:bg-muted/30 h-auto bg-transparent dark:bg-muted"
-          >
-            {suggestion.icon}
-            <span>{suggestion.text}</span>
-          </Button>
-        ))}
       </div>
     </div>
   );
