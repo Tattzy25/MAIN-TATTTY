@@ -1,15 +1,13 @@
-'use client';
-import React, { useEffect, useId, useState } from 'react';
-import { AnimatePresence, motion, MotionConfig } from 'motion/react';
-import { XIcon, Heart, Share2, Download, Info } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { ReactionDock } from './reaction-dock';
+"use client";
 
-export const transition = {
-  type: 'spring',
-  stiffness: 300, // Increased from 80
-  damping: 30, // Increased from 10
-  mass: 0.5, // Decreased from 0.9
+import { useState, useEffect, useId } from "react";
+import { motion, AnimatePresence, MotionConfig } from "motion/react";
+
+const transition = {
+  type: "spring",
+  bounce: 0.05,
+  duration: 0.3,
+  mass: 0.5,
 } as const;
 
 interface IMediaModal {
@@ -40,141 +38,116 @@ export function MediaModal({ imgSrc, videoSrc, className }: IMediaModal) {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isMediaModalOpen]);
+
   return (
     <MotionConfig transition={transition}>
       <motion.div
-        className='w-full h-full flex relative flex-col overflow-hidden border cursor-zoom-in dark:bg-black bg-gray-300 hover:bg-gray-200 dark:hover:bg-gray-950'
+        className={`cursor-pointer w-full h-full ${className || ''}`}
         layoutId={`dialog-${uniqueId}`}
-        style={{
-          borderRadius: '12px',
-        }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         onClick={() => {
           setIsMediaModalOpen(true);
         }}
       >
         {imgSrc && (
-          <motion.div
-            layoutId={`dialog-img-${uniqueId}`}
-            className='w-full h-full'
-          >
-            <img
-              src={imgSrc}
-              alt='Generated Tattoo'
-              className=' w-full object-cover h-full'
-            />
-          </motion.div>
+          <img
+            src={imgSrc}
+            alt="Tattoo preview"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
         )}
         {videoSrc && (
-          <motion.div
-            layoutId={`dialog-video-${uniqueId}`}
-            className='w-full h-full'
-          >
-            <video
-              autoPlay
-              muted
-              loop
-              className='h-full w-full object-cover  rounded-xs'
-            >
-              <source src={videoSrc} type='video/mp4' />
-            </video>
-          </motion.div>
+          <video
+            src={videoSrc}
+            className="w-full h-full object-cover"
+            muted
+            loop
+            autoPlay
+            playsInline
+          />
         )}
       </motion.div>
-      <AnimatePresence initial={false} mode='popLayout'>
+
+      <AnimatePresence initial={false} mode="popLayout">
         {isMediaModalOpen && (
           <>
             <motion.div
-              key={`backdrop-${uniqueId}`}
-              className='fixed inset-0 h-full w-full z-50  dark:bg-black/25 bg-white/95 backdrop-blur-xs '
-              variants={{ open: { opacity: 1 }, closed: { opacity: 0 } }}
-              initial='closed'
-              animate='open'
-              exit='closed'
+              className="fixed inset-0 bg-black/80 z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onClick={() => {
                 setIsMediaModalOpen(false);
               }}
             />
             <motion.div
-              key='dialog'
-              className='pointer-events-none fixed inset-0 flex items-center justify-center z-50'
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
               <motion.div
-                className={cn(
-                  'pointer-events-auto relative flex flex-col items-center justify-center z-50',
-                  'w-full h-full'
-                )}
+                className="relative max-w-[90vw] max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+                layoutId={`dialog-${uniqueId}`}
+                layout={isMediaModalOpen}
+                tabIndex={-1}
+                style={{
+                  borderRadius: "16px",
+                }}
               >
-                <motion.div
-                  className={cn(
-                    'relative flex flex-col overflow-hidden dark:bg-gray-950 bg-gray-200 border shadow-2xl',
-                    'max-w-[98vw] max-h-[95vh] w-auto h-auto',
-                    imgSrc && 'cursor-zoom-out'
-                  )}
-                  layoutId={`dialog-${uniqueId}`}
-                  layout={isMediaModalOpen}
-                  tabIndex={-1}
-                  style={{
-                    borderRadius: '24px',
-                  }}
-                >
-                  {imgSrc && (
-                    <motion.div
-                      layoutId={`dialog-img-${uniqueId}`}
-                      className='w-full h-full'
-                      onClick={() => setIsMediaModalOpen(false)}
+                {imgSrc && (
+                  <motion.div
+                    layoutId={`dialog-img-${uniqueId}`}
+                    className="w-full h-full"
+                    onClick={() => setIsMediaModalOpen(false)}
+                  >
+                    <img
+                      src={imgSrc}
+                      alt="Tattoo full view"
+                      className="w-full h-full object-contain max-w-[90vw] max-h-[90vh]"
+                      loading="lazy"
+                    />
+                  </motion.div>
+                )}
+                {videoSrc && (
+                  <motion.div
+                    layoutId={`dialog-video-${uniqueId}`}
+                    className="w-full h-full"
+                    onClick={() => setIsMediaModalOpen(false)}
+                  >
+                    <video
+                      src={videoSrc}
+                      className="w-full h-full object-contain max-w-[90vw] max-h-[90vh]"
+                      controls
+                      autoPlay
+                      playsInline
+                    />
+                  </motion.div>
+                )}
+                {videoSrc && (
+                  <button
+                    onClick={() => setIsMediaModalOpen(false)}
+                    className="absolute right-6 top-6 p-3 text-zinc-50 cursor-pointer dark:bg-gray-900 bg-gray-400 hover:bg-gray-500 rounded-xl dark:hover:bg-gray-800"
+                    type="button"
+                    aria-label="Close modal"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      <img
-                        src={imgSrc}
-                        alt=''
-                        className='h-full w-full object-contain bg-black/5 dark:bg-black/50'
-                      />
-                    </motion.div>
-                  )}
-                  {videoSrc && (
-                    <motion.div
-                      layoutId={`dialog-video-${uniqueId}`}
-                      className='w-full h-full'
-                    >
-                      <video
-                        autoPlay
-                        muted
-                        loop
-                        controls
-                        className='h-full w-full object-cover  rounded-xs'
-                      >
-                        <source src={videoSrc} type='video/mp4' />
-                      </video>
-                    </motion.div>
-                  )}
-                  {videoSrc && (
-                    <button
-                      onClick={() => setIsMediaModalOpen(false)}
-                      className='absolute right-6 top-6 p-3 text-zinc-50 cursor-pointer dark:bg-gray-900 bg-gray-400 hover:bg-gray-500 rounded-xl dark:hover:bg-gray-800'
-                      type='button'
-                      aria-label='Close dialog'
-                    >
-                      <XIcon size={24} />
-                    </button>
-                  )}
-                </motion.div>
-
-                {/* Reaction Dock - Placed below the image */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: 0.1 }}
-                  className="mt-6"
-                >
-                  <ReactionDock 
-                    items={[
-                      { icon: <Heart className="w-5 h-5" />, label: "Like", onClick: () => console.log("Like") },
-                      { icon: <Share2 className="w-5 h-5" />, label: "Share", onClick: () => console.log("Share") },
-                      { icon: <Download className="w-5 h-5" />, label: "Download", onClick: () => console.log("Download") },
-                      { icon: <Info className="w-5 h-5" />, label: "Details", onClick: () => console.log("Details") },
-                    ]}
-                  />
-                </motion.div>
+                      <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
               </motion.div>
             </motion.div>
           </>

@@ -12,7 +12,7 @@ import {
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 import { search } from "@/app/actions/search";
-import { MediaModal } from "./media-modal";
+import ImagePreview from "./image_preview";
 import { Button } from "./ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "./ui/empty";
 import { Input } from "./ui/input";
@@ -52,7 +52,12 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
           {images.map((image) => (
             <div key={image.url} className="mb-4 break-inside-avoid">
               <AspectRatio ratio={1}>
-                <MediaModal imgSrc={image.url} />
+                <ImagePreview
+                  src={image.url}
+                  width={400}
+                  height={400}
+                  className="w-full h-full object-cover cursor-pointer rounded-lg hover:opacity-90 transition-opacity"
+                />
               </AspectRatio>
             </div>
           ))}
@@ -60,14 +65,24 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
             ? state.data.map((blob) => (
                 <div key={blob.url} className="mb-4 break-inside-avoid">
                   <AspectRatio ratio={1}>
-                    <MediaModal imgSrc={blob.url} />
+                    <ImagePreview
+                      src={blob.url}
+                      width={400}
+                      height={400}
+                      className="w-full h-full object-cover cursor-pointer rounded-lg hover:opacity-90 transition-opacity"
+                    />
                   </AspectRatio>
                 </div>
               ))
             : defaultData.map((blob) => (
                 <div key={blob.url} className="mb-4 break-inside-avoid">
                   <AspectRatio ratio={1}>
-                    <MediaModal imgSrc={blob.downloadUrl} />
+                    <ImagePreview
+                      src={blob.downloadUrl}
+                      width={400}
+                      height={400}
+                      className="w-full h-full object-cover cursor-pointer rounded-lg hover:opacity-90 transition-opacity"
+                    />
                   </AspectRatio>
                 </div>
               ))}
@@ -131,4 +146,3 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
     </>
   );
 };
-
