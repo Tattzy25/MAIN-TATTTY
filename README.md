@@ -66,7 +66,7 @@ TaTTTy specializes in tattoo image management and generation:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Tattzy25/ops-tattty.git
+git clone https://github.com/Hustle24-07/TaTTTy.git
 cd ops-tattty
 
 # Install dependencies
@@ -152,4 +152,4 @@ This project follows AI-first development practices as outlined in `.github/inst
 
 ## 📄 License
 
-This project is part of the Tattzy25 portfolio repository.
+This project is part of the Hustle24-07 portfolio repository.

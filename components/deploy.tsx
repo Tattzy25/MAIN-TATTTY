@@ -23,7 +23,7 @@ export const DeployButton = () => {
 	url.searchParams.set("repository-name", "ops-tattty");
 	url.searchParams.set(
 		"repository-url",
-		"https://github.com/Tattzy25/ops-tattty",
+		"https://github.com/Hustle24-07/TaTTTy",
 	);
 
 	// Integrations
