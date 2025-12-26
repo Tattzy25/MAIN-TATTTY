@@ -9,7 +9,7 @@ import {
   Loader2Icon,
   UploadIcon,
 } from "lucide-react";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useId } from "react";
 import { toast } from "sonner";
 import { search } from "@/app/actions/search";
 import ImagePreview from "./image_preview";
@@ -30,6 +30,7 @@ type ResultsClientProps = {
 export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
   const { images } = useUploadedImages();
   const [state, formAction, isPending] = useActionState(search, { data: [] });
+  const searchId = useId();
 
   useEffect(() => {
     if ("error" in state) {
@@ -131,7 +132,7 @@ export const ResultsClient = ({ defaultData }: ResultsClientProps) => {
         <Input
           className="w-full rounded-full border-none bg-secondary shadow-none outline-none"
           disabled={isPending || !hasImages}
-          id="search"
+          id={searchId}
           name="search"
           placeholder="Search by description"
           required

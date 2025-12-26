@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { ArrowLeftIcon, Loader2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ export const SearchBar = ({
 	hasImages,
 	onReset,
 }: SearchBarProps) => {
+	const searchId = useId();
 	return (
 		<form
 			action={formAction}
@@ -40,7 +42,7 @@ export const SearchBar = ({
 			<Input
 				className="w-full rounded-full border-none bg-secondary shadow-none outline-none"
 				disabled={isPending || !hasImages}
-				id="search"
+				id={searchId}
 				name="search"
 				placeholder="Search by description"
 				required
