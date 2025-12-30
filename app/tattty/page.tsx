@@ -4,8 +4,10 @@ import { TATTTY_UI_TEXT } from "@/app/tattty/constants";
 import { TextWordCarousel } from "@/components/word-carousel";
 import { ScrollerHorizontal } from "@/components/horizontal-scroll";
 import { ScrollerHidden } from "@/components/verticle-scroll";
+import { ScrollerHiddenAlt } from "@/components/verticle-scroll-alt";
 import Q1Modal from "./Q1";
 import Q2Modal from "./Q2";
+import SelectionBadges from "@/components/selection-badges";
 
 export default function Ai02() {
   return (
@@ -35,11 +37,11 @@ export default function Ai02() {
             <div className="mt-2.5">
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="w-full md:w-1/2">
-                  <ScrollerHidden />
+                  <ScrollerHidden idPrefix="colors" />
                 </div>
 
                 <div className="w-full md:w-1/2">
-                  <ScrollerHidden />
+                  <ScrollerHiddenAlt idPrefix="aspect" />
                 </div>
               </div>
             </div>
@@ -61,6 +63,7 @@ export default function Ai02() {
               </div>
             </div>
             {/* End two modals */}
+            <SelectionBadges />
           </div>
         </div>
       </div>
