@@ -4,15 +4,15 @@ import { Scroller } from "@/components/ui/scroller";
 import { useSelection } from "@/components/providers/selection-provider";
 
 /**
- * Second vertical scroller file — different component so each column can evolve independently.
- * Default idPrefix is "aspect" to match the second column on the tattty page.
+ * Vertical scroller that supports selection via SelectionProvider.
+ * idPrefix lets callers namespace selections (e.g. "colors", "aspect").
  */
-export function ScrollerHiddenAlt({ idPrefix = "aspect" }: { idPrefix?: string }) {
+export function ScrollerHiddenAlt({ idPrefix = "vertical-alt" }: { idPrefix?: string }) {
   const { isSelected, toggle } = useSelection();
 
   const items = Array.from({ length: 12 }).map((_, index) => ({
     id: `${idPrefix}-${index}`,
-    label: `Option ${index + 1}`,
+    label: `Card ${index + 1}`,
   }));
 
   return (
@@ -30,7 +30,9 @@ export function ScrollerHiddenAlt({ idPrefix = "aspect" }: { idPrefix?: string }
             }
           >
             <div className="font-medium text-lg">{item.label}</div>
-            <span className="text-muted-foreground text-sm">Select this option</span>
+            <span className="text-muted-foreground text-sm">
+              Scroll smoothly without visible scrollbars
+            </span>
           </button>
         );
       })}
