@@ -2,6 +2,8 @@
 
 import { QUICK_IDEAS_SUGGESTIONS, QUICK_IDEAS_UI_TEXT } from "@/app/tattty/constants";
 import { PromptInputArea } from "@/components/prompt-input-area";
+import { ScrollerHorizontal } from "@/components/horizontal-scroll";
+import { ScrollerHidden } from "@/components/verticle-scroll";
 
 export default function Ai02() {
   return (
@@ -19,6 +21,21 @@ export default function Ai02() {
 
       {/* Reusable Prompt Input Area */}
       <PromptInputArea suggestions={QUICK_IDEAS_SUGGESTIONS} />
+      <div className="w-full flex justify-center mt-6">
+        <div className="w-full max-w-2xl">
+          <ScrollerHorizontal />
+          <div className="mt-2.5">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="w-full md:w-1/2">
+                <ScrollerHidden />
+              </div>
+              <div className="w-full md:w-1/2">
+                <ScrollerHidden />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

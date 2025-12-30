@@ -2,6 +2,8 @@
 
 import { INK_REDEMPTION_SUGGESTIONS, INK_REDEMPTION_UI_TEXT } from "@/app/tattty/constants";
 import { PromptInputArea } from "@/components/prompt-input-area";
+import { ScrollerHorizontal } from "@/components/horizontal-scroll";
+import { ScrollerHidden } from "@/components/verticle-scroll";
 
 export default function InkRedemptionPage() {
   return (
@@ -19,6 +21,21 @@ export default function InkRedemptionPage() {
 
       {/* Reusable Prompt Input Area */}
       <PromptInputArea suggestions={INK_REDEMPTION_SUGGESTIONS} />
+      <div className="w-full flex justify-center mt-6">
+        <div className="w-full max-w-2xl">
+          <ScrollerHorizontal />
+          <div className="mt-2.5">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="w-full md:w-1/2">
+                <ScrollerHidden />
+              </div>
+              <div className="w-full md:w-1/2">
+                <ScrollerHidden />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

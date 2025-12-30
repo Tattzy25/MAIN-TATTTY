@@ -20,6 +20,12 @@ importers:
       '@ai-sdk/replicate':
         specifier: ^1.0.19
         version: 1.0.20(zod@4.2.1)
+      '@better-upload/client':
+        specifier: ^3.0.10
+        version: 3.0.10(react@19.2.3)
+      '@better-upload/server':
+        specifier: ^3.0.10
+        version: 3.0.10
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -452,6 +458,14 @@ packages:
   '@babel/runtime@7.28.4':
     resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
     engines: {node: '>=6.9.0'}
+
+  '@better-upload/client@3.0.10':
+    resolution: {integrity: sha512-/AQ/+/dq1ElDXB5DhpWm0dH1cPSXWMa1NVQC8CNDUArvmXVm5+B7+pwhzfdfTMlG0pGjOzGnpy5v6Lwn9UlWFg==}
+    peerDependencies:
+      react: '*'
+
+  '@better-upload/server@3.0.10':
+    resolution: {integrity: sha512-8/+5nVqMtgOEkq1ez29psP3HilCrtS8QHk8/gnu2VMsUCn5GNvoegBcvucELrVO3tuA2iSNPvDXphVOfRaHVwA==}
 
   '@biomejs/biome@2.2.7':
     resolution: {integrity: sha512-1a8j0UP1vXVUf3UzMZEJ/zS2VgAG6wU6Cuh/I764sUGI+MCnJs/9WaojHYBDCxCMLTgU60/WqnYof85emXmSBA==}
@@ -3102,6 +3116,9 @@ packages:
     resolution: {integrity: sha512-0bDNnY/u6pPwHDMoF0FieU354oBi0a8rD9FcsLwzcGWbc8KS8KPIi7y+s13OlVY+gMWc/9xEMUgNE6Qm8ZllYQ==}
     engines: {node: '>=4'}
 
+  aws4fetch@1.0.20:
+    resolution: {integrity: sha512-/djoAN709iY65ETD6LKCtyyEI04XIBP5xVvfmNxsEP0uJB5tyaGBztSryRr4HqMStr9R06PisQE7m9zDTXKu6g==}
+
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
@@ -3546,6 +3563,10 @@ packages:
 
   fast-xml-parser@5.2.5:
     resolution: {integrity: sha512-pfX9uG9Ki0yekDHx2SiuRIyFdyAr1kMIMitPvb0YBo8SUfKvia7w7FIyd/l6av85pFYRhZscS75MwMnbvY+hcQ==}
+    hasBin: true
+
+  fast-xml-parser@5.3.3:
+    resolution: {integrity: sha512-2O3dkPAAC6JavuMm8+4+pgTk+5hoAs+CjZ+sWcQLkX9+/tHRuTkQh/Oaifr8qDmZ8iEHb771Ea6G8CdwkrgvYA==}
     hasBin: true
 
   fastq@1.20.1:
@@ -5178,6 +5199,16 @@ snapshots:
   '@babel/helper-validator-identifier@7.28.5': {}
 
   '@babel/runtime@7.28.4': {}
+
+  '@better-upload/client@3.0.10(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+
+  '@better-upload/server@3.0.10':
+    dependencies:
+      aws4fetch: 1.0.20
+      fast-xml-parser: 5.3.3
+      zod: 4.2.1
 
   '@biomejs/biome@2.2.7':
     optionalDependencies:
@@ -8400,6 +8431,8 @@ snapshots:
 
   attr-accept@2.2.5: {}
 
+  aws4fetch@1.0.20: {}
+
   balanced-match@1.0.2: {}
 
   base64-arraybuffer@1.0.2:
@@ -8845,6 +8878,10 @@ snapshots:
       pako: 2.1.0
 
   fast-xml-parser@5.2.5:
+    dependencies:
+      strnum: 2.1.2
+
+  fast-xml-parser@5.3.3:
     dependencies:
       strnum: 2.1.2
 

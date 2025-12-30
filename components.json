@@ -21,6 +21,10 @@
   "registries": {
     "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
     "@blocks": "https://blocks.so/r/{name}.json",
-    "@animbits": "https://animbits.dev/r/{name}.json"
-  }
+    "@animbits": "https://animbits.dev/r/{name}.json",
+    "@diceui": "https://diceui.com/r/{name}.json"
+  },
+  "items": [
+    "@diceui/scroller"
+  ]
 }
