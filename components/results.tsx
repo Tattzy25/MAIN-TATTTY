@@ -1,16 +1,8 @@
 import { list } from "@vercel/blob";
 import { ResultsClient } from "./results.client";
 
-const PAGE_SIZE = 24;
-
 export const Results = async () => {
-	const { blobs, cursor, hasMore } = await list({ limit: PAGE_SIZE });
+  const { blobs } = await list({ limit: 50 });
 
-	return (
-		<ResultsClient
-			defaultData={blobs}
-			initialCursor={cursor}
-			initialHasMore={hasMore}
-		/>
-	);
+  return <ResultsClient defaultData={blobs} />;
 };

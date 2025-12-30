@@ -4,15 +4,6 @@ import { TATTTY_UI_TEXT } from "@/app/tattty/constants";
 import { TextWordCarousel } from "@/components/word-carousel";
 import { ScrollerHorizontal } from "@/components/horizontal-scroll";
 import { ScrollerHidden } from "@/components/verticle-scroll";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
 import Q1Modal from "./Q1";
 import Q2Modal from "./Q2";
 
