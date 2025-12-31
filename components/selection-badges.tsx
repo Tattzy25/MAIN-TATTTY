@@ -23,7 +23,7 @@ import { useGenerator } from "@/hooks/use-generator";
  */
 
 export default function SelectionBadges() {
-  const { selectedIds, toggle, clear, getSelectedFor } = useSelection();
+  const { selectedIds, toggle, clear, getSelectedFor, select } = useSelection();
   const { visible, labelFor, savedQTexts } = useBadgeLabels(selectedIds);
   const { generatedUrl, isGenerating, error, generate, clearGenerated } = useGenerator();
 
@@ -62,13 +62,32 @@ export default function SelectionBadges() {
       return;
     }
 
-    // Ensure feature selections exist (provider defaults should set them)
+    // Ensure feature selections exist. If any feature is missing (e.g. user cleared them),
+    // auto-select the sensible default (index 1) so generation can proceed without a hard error.
+    // This keeps the UX smooth on pages like "quick-ideas" while still allowing the user to change selections.
     const featureNamespaces = ["styles", "colors", "aspect"];
     const missingFeatures = featureNamespaces.filter((ns) => !getSelectedFor(ns));
     if (missingFeatures.length > 0) {
-      setLocalError("Please select one option for Style, Color, and Aspect before inking.");
-      return;
+      // Auto-select a sensible default for each missing namespace (index 1 mirrors the provider defaults).
+      missingFeatures.forEach((ns) => {
+        select(`${ns}-1`);
+      });
+      // Clear any previous local error so the UI doesn't show a blocking message.
+      setLocalError(null);
     }
+
+    // If Q1/Q2 texts exist in localStorage but the user hasn't opened the Q modals
+    // on this page (so no selection was recorded), ensure we still mark q1/q2 as selected.
+    // This allows the generation flow to proceed on pages like "quick-ideas" without
+    // requiring the Q modals to be present on that page.
+    const qNamespaces: Array<"q1" | "q2"> = ["q1", "q2"];
+    qNamespaces.forEach((ns) => {
+      const saved = (savedQTexts[ns] ?? "").trim();
+      if (!getSelectedFor(ns) && saved.length >= qMin) {
+        // select the namespace key (Q selections are stored as "q1" / "q2" by the modals)
+        select(ns);
+      }
+    });
 
     // Build final selection payload
     const namespaces = ["styles", "colors", "aspect", "q1", "q2"];
@@ -108,19 +127,21 @@ export default function SelectionBadges() {
   return (
     <div className="w-full max-w-2xl mx-auto mt-6">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-full">
-          <Badges items={badgeItems} onRemove={handleRemove} maxVisible={maxVisible} />
-        </div>
+        <div className="w-full flex flex-wrap items-center justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <Badges items={badgeItems} onRemove={handleRemove} maxVisible={maxVisible} />
+          </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={handleClearAll}
-            className="inline-flex items-center px-3 py-1.5 rounded-md border bg-transparent text-sm"
-            aria-disabled={selectedIds.length === 0}
-          >
-            Clear
-          </button>
+          <div className="ml-3">
+            <button
+              type="button"
+              onClick={handleClearAll}
+              className="inline-flex items-center px-3 py-1.5 rounded-md border bg-transparent text-sm"
+              aria-disabled={selectedIds.length === 0}
+            >
+              Clear
+            </button>
+          </div>
         </div>
 
         <div className="w-full flex justify-center mt-2">

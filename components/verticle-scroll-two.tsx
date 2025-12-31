@@ -7,12 +7,12 @@ import { useSelection } from "@/components/providers/selection-provider";
  * Vertical scroller that supports selection via SelectionProvider.
  * idPrefix lets callers namespace selections (e.g. "colors", "aspect").
  */
-export function ScrollerHiddenAlt({ idPrefix = "vertical-alt" }: { idPrefix?: string }) {
+export function ScrollerHiddenAlt({ idPrefix = "aspect" }: { idPrefix?: string }) {
   const { isSelected, toggle } = useSelection();
 
   const items = Array.from({ length: 12 }).map((_, index) => ({
     id: `${idPrefix}-${index}`,
-    label: `Card ${index + 1}`,
+    label: `Aspect ${index + 1}`,
   }));
 
   return (

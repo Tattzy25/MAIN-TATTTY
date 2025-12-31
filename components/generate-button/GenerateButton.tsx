@@ -22,8 +22,7 @@ export default function GenerateButton({
       onClick={onClick}
       disabled={disabled || loading}
       variant="default"
-      size="lg"
-      className="btn-lg"
+      size="xl"
     >
       {loading ? "Inking..." : children}
     </Button>

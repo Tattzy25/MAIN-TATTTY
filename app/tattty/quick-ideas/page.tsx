@@ -1,56 +1,46 @@
 "use client";
 
-import { QUICK_IDEAS_SUGGESTIONS, QUICK_IDEAS_UI_TEXT, TATTTY_UI_TEXT } from "@/app/tattty/constants";
+import { QUICK_IDEAS_SUGGESTIONS, QUICK_IDEAS_UI_TEXT } from "@/app/tattty/constants";
 import { PromptInputArea } from "@/components/prompt-input-area";
-import { TextWordCarousel } from "@/components/word-carousel";
 import { ScrollerHorizontal } from "@/components/horizontal-scroll";
 import { ScrollerHidden } from "@/components/verticle-scroll";
-import { ScrollerHiddenAlt } from "@/components/verticle-scroll-alt";
+import { ScrollerHiddenAlt } from "@/components/verticle-scroll-two";
 import SelectionBadges from "@/components/selection-badges";
 
-export default function QuickIdeasPage() {
+export default function Ai02() {
   return (
-    <div className="flex flex-col items-center p-4 sm:p-8 gap-24">
-      <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 sm:p-8">
+      {/* Consistent Header */}
+      <div className="flex flex-col items-center justify-center space-y-8 text-center mb-8">
         <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-linear-to-b from-foreground to-foreground/50 uppercase pt-3 sm:pt-4 md:pt-6 lg:pt-8">
           {QUICK_IDEAS_UI_TEXT.title}
         </h2>
-
-        <p className="text-2xl sm:text-4xl lg:text-5xl font-semibold text-muted-foreground space-x-2 mt-8">
-          <span>Your</span>
-          <TextWordCarousel
-            words={TATTTY_UI_TEXT.carouselWords}
-            interval={2}
-            duration={0.3}
-            className="text-white font-bold"
-          />
-          <span>Our Ink</span>
+        
+        <p className="max-w-md text-muted-foreground text-lg sm:text-xl font-medium">
+          {QUICK_IDEAS_UI_TEXT.description}
         </p>
       </div>
 
-      <div className="flex gap-12 w-full justify-center items-stretch">
-        <div className="w-full flex justify-center">
-          <div className="w-full max-w-2xl">
-            {/* Reusable Prompt Input Area */}
-            <PromptInputArea suggestions={QUICK_IDEAS_SUGGESTIONS} />
-
-            <div className="mt-6 w-full">
-              <ScrollerHorizontal />
-
-              <div className="mt-2.5">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="w-full md:w-1/2">
-                    <ScrollerHidden idPrefix="colors" />
-                  </div>
-
-                  <div className="w-full md:w-1/2">
-                    <ScrollerHiddenAlt idPrefix="aspect" />
-                  </div>
-                </div>
+      {/* Reusable Prompt Input Area */}
+      <PromptInputArea suggestions={QUICK_IDEAS_SUGGESTIONS} />
+      <div className="w-full flex justify-center mt-6">
+        <div className="w-full max-w-2xl">
+          <ScrollerHorizontal idPrefix="styles" />
+          <div className="mt-2.5">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="w-full md:w-1/2">
+                <ScrollerHidden idPrefix="colors" />
+              </div>
+              <div className="w-full md:w-1/2">
+                <ScrollerHiddenAlt idPrefix="aspect" />
               </div>
             </div>
+          </div>
 
-            <SelectionBadges />
+          <div className="mt-6 w-full flex justify-center">
+            <div className="w-full max-w-2xl">
+              <SelectionBadges />
+            </div>
           </div>
         </div>
       </div>

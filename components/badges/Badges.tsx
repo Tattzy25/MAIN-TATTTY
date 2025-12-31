@@ -23,7 +23,7 @@ export default function Badges({ items, onRemove, maxVisible = 5 }: BadgesProps)
   return (
     <div className="flex flex-wrap justify-center gap-3">
       {visible.map((it) => (
-        <Badge key={it.id} variant={it.variant as any} className="inline-flex items-center gap-2 px-3 py-1.5 text-base">
+        <Badge key={it.id} variant={it.variant as any} size="lg" className="inline-flex items-center gap-2">
           <span className="select-none">{it.label}</span>
           <button
             type="button"
@@ -35,6 +35,15 @@ export default function Badges({ items, onRemove, maxVisible = 5 }: BadgesProps)
           </button>
         </Badge>
       ))}
+ 
+       {overflow > 0 && (
+-        <Badge className="px-3 py-1.5 text-base" variant="secondary">
+-          +{overflow} more
+-        </Badge>
++        <Badge variant="secondary" size="lg">
++          +{overflow} more
++        </Badge>
+       )}
 
       {overflow > 0 && (
         <Badge className="px-3 py-1.5 text-base" variant="secondary">
