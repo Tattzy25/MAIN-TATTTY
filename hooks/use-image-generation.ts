@@ -81,14 +81,14 @@ export function useImageGeneration(): UseImageGenerationReturn {
 				);
 				try {
 					let response: Response;
-					
+
 					if (files && files.length > 0) {
 						// Use customize-image endpoint for image-to-image generation
 						const formData = new FormData();
 						formData.append("prompt", prompt);
 						formData.append("provider", provider);
 						formData.append("modelId", modelId);
-						
+
 						files.forEach((file, index) => {
 							formData.append(`image_${index}`, file);
 						});

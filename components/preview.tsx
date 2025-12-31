@@ -10,7 +10,13 @@ type PreviewProps = {
 	liked?: boolean;
 };
 
-export const Preview = ({ url, priority, onClick, selected, liked }: PreviewProps) => (
+export const Preview = ({
+	url,
+	priority,
+	onClick,
+	selected,
+	liked,
+}: PreviewProps) => (
 	<button
 		aria-label="Open image preview"
 		className={cn(

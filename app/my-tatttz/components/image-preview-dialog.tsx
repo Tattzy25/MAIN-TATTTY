@@ -1,5 +1,6 @@
 import { ZoomIn } from "lucide-react";
 import Image from "next/image";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
 	Dialog,
 	DialogContent,
@@ -8,7 +9,6 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { GalleryImage } from "../hooks/use-images";
 
 interface ImagePreviewDialogProps {

@@ -60,13 +60,22 @@ export const UploadButton = () => {
 		});
 
 	// Small helper to render the progress toast body
-	const renderProgressBody = (completed: number, total: number, onCancel: () => void) => (
+	const renderProgressBody = (
+		completed: number,
+		total: number,
+		onCancel: () => void,
+	) => (
 		<div className="flex flex-col gap-2">
 			<div className="flex items-center justify-between">
 				<div className="font-medium text-sm">
 					Uploading {total} file{total > 1 ? "s" : ""}...
 				</div>
-				<Button className="size-6" onClick={onCancel} size="icon" variant="ghost">
+				<Button
+					className="size-6"
+					onClick={onCancel}
+					size="icon"
+					variant="ghost"
+				>
 					<XIcon className="size-3" />
 				</Button>
 			</div>
@@ -113,9 +122,15 @@ export const UploadButton = () => {
 	};
 
 	// Upload in batches and update progress toast
-	const uploadInBatches = async (tempBlobs: { file: File; tempUrl: string; blob: any }[], toastId: string) => {
+	const uploadInBatches = async (
+		tempBlobs: { file: File; tempUrl: string; blob: any }[],
+		toastId: string,
+	) => {
 		const BATCH_SIZE = 10;
-		const results: PromiseSettledResult<{ success: boolean; fileName: string }>[] = [];
+		const results: PromiseSettledResult<{
+			success: boolean;
+			fileName: string;
+		}>[] = [];
 		let completed = 0;
 		const total = tempBlobs.length;
 
@@ -148,15 +163,22 @@ export const UploadButton = () => {
 		const tempBlobs = createTempBlobs(files);
 		for (const { blob } of tempBlobs) addImage(blob);
 
-		let completed = 0;
+		const completed = 0;
 		const total = tempBlobs.length;
 
 		// create toast once and reuse its id to update
-		const toastId = toast(renderProgressBody(completed, total, cancelUpload), "default", {
-			duration: Number.POSITIVE_INFINITY,
-		});
+		const toastId = toast(
+			renderProgressBody(completed, total, cancelUpload),
+			"default",
+			{
+				duration: Number.POSITIVE_INFINITY,
+			},
+		);
 
-		let results: PromiseSettledResult<{ success: boolean; fileName: string }>[] = [];
+		let results: PromiseSettledResult<{
+			success: boolean;
+			fileName: string;
+		}>[] = [];
 		try {
 			results = await uploadInBatches(tempBlobs, toastId);
 		} finally {
@@ -167,7 +189,9 @@ export const UploadButton = () => {
 			const failed = results.filter((r) => r.status === "rejected");
 
 			if (successful.length > 0) {
-				success(`${successful.length} file${successful.length > 1 ? "s" : ""} uploaded successfully`);
+				success(
+					`${successful.length} file${successful.length > 1 ? "s" : ""} uploaded successfully`,
+				);
 			}
 
 			if (failed.length > 0) {
@@ -176,9 +200,12 @@ export const UploadButton = () => {
 					firstError.status === "rejected" && firstError.reason instanceof Error
 						? firstError.reason.message
 						: "Unknown error";
-				error(`Failed to upload ${failed.length} file${failed.length > 1 ? "s" : ""}`, {
-					description: message,
-				});
+				error(
+					`Failed to upload ${failed.length} file${failed.length > 1 ? "s" : ""}`,
+					{
+						description: message,
+					},
+				);
 			}
 
 			if (inputRef.current) inputRef.current.value = "";

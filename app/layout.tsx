@@ -4,8 +4,8 @@ import { Geist, Geist_Mono, Orbitron, Rock_Salt } from "next/font/google";
 import type { ReactNode } from "react";
 
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 import { cn } from "@/lib/utils";
 
@@ -40,7 +40,7 @@ const orbitron = Orbitron({
 export const metadata: Metadata = {
 	title: "TaTTTy",
 	description: "AI-powered image management platform with semantic search",
-	metadataBase: new URL('https://tattty.com'),
+	metadataBase: new URL("https://tattty.com"),
 };
 
 type RootLayoutProps = {

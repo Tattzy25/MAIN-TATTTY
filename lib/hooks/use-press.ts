@@ -1,34 +1,34 @@
-import { type MotionProps, type Easing } from "motion/react";
+import type { Easing, MotionProps } from "motion/react";
 
 export interface UsePressOptions {
-  pressScale?: number;
+	pressScale?: number;
 
-  duration?: number;
+	duration?: number;
 
-  ease?: Easing | Easing[];
+	ease?: Easing | Easing[];
 
-  addRotation?: boolean;
+	addRotation?: boolean;
 
-  rotationAmount?: number;
+	rotationAmount?: number;
 }
 
 export function usePress(options: UsePressOptions = {}): MotionProps {
-  const {
-    pressScale = 0.95,
-    duration = 0.1,
-    ease = "easeInOut",
-    addRotation = false,
-    rotationAmount = 2,
-  } = options;
+	const {
+		pressScale = 0.95,
+		duration = 0.1,
+		ease = "easeInOut",
+		addRotation = false,
+		rotationAmount = 2,
+	} = options;
 
-  return {
-    whileTap: {
-      scale: pressScale,
-      rotate: addRotation ? rotationAmount : 0,
-    },
-    transition: {
-      duration,
-      ease,
-    },
-  };
+	return {
+		whileTap: {
+			scale: pressScale,
+			rotate: addRotation ? rotationAmount : 0,
+		},
+		transition: {
+			duration,
+			ease,
+		},
+	};
 }

@@ -31,7 +31,8 @@ export const LAYOUT_STYLES = {
 	imageWrapper: "relative mt-8 flex w-full justify-center sm:mt-10 md:mt-12",
 
 	/** Image container */
-	imageContainer: "w-full max-w-full px-2 sm:px-4 sm:max-w-[800px] md:px-0 md:max-w-[900px] lg:max-w-[1000px]",
+	imageContainer:
+		"w-full max-w-full px-2 sm:px-4 sm:max-w-[800px] md:px-0 md:max-w-[900px] lg:max-w-[1000px]",
 
 	/** Image box - mobile first (smaller height on mobile) */
 	imageBox:

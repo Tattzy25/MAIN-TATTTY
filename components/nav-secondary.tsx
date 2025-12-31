@@ -1,10 +1,9 @@
 "use client";
 
 import type { Icon } from "@tabler/icons-react";
-import type * as React from "react";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type * as React from "react";
 import {
 	SidebarGroup,
 	SidebarGroupContent,
@@ -33,11 +32,8 @@ export function NavSecondary({
 				<SidebarMenu>
 					{items.map((item) => (
 						<SidebarMenuItem key={item.title}>
-							<SidebarMenuButton 
-								asChild
-								isActive={pathname === item.url}
-							>
-								<Link 
+							<SidebarMenuButton asChild isActive={pathname === item.url}>
+								<Link
 									href={item.url}
 									onClick={() => isMobile && setOpenMobile(false)}
 								>

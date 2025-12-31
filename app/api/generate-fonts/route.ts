@@ -19,8 +19,9 @@ export async function POST(req: NextRequest) {
 	const requestId = Math.random().toString(36).substring(7);
 
 	try {
-        const settings = await getSettings();
-        const apiKey = settings.providers.openai.apiKey || process.env.OPENAI_API_KEY;
+		const settings = await getSettings();
+		const apiKey =
+			settings.providers.openai.apiKey || process.env.OPENAI_API_KEY;
 
 		const { text, style } = await req.json();
 
@@ -41,9 +42,9 @@ Original text: "${text}"`;
 
 		const startstamp = performance.now();
 
-        const customOpenAI = createOpenAI({
-            apiKey: apiKey,
-        });
+		const customOpenAI = createOpenAI({
+			apiKey: apiKey,
+		});
 
 		const generatePromise = generateText({
 			model: customOpenAI("gpt-4o-mini"),

@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useMemo, useState, useCallback } from "react";
+import type React from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useMemo,
+	useState,
+} from "react";
 
 /**
  * SelectionProvider (single-selection per namespace)
@@ -18,77 +25,88 @@ import React, { createContext, useContext, useMemo, useState, useCallback } from
  */
 
 type SelectionContextValue = {
-  selectedIds: string[];
-  isSelected: (id: string) => boolean;
-  getSelectedFor: (namespace: string) => string | undefined;
-  toggle: (id: string) => void;
-  select: (id: string) => void;
-  clear: () => void;
+	selectedIds: string[];
+	isSelected: (id: string) => boolean;
+	getSelectedFor: (namespace: string) => string | undefined;
+	toggle: (id: string) => void;
+	select: (id: string) => void;
+	clear: () => void;
 };
 
-const SelectionContext = createContext<SelectionContextValue | undefined>(undefined);
+const SelectionContext = createContext<SelectionContextValue | undefined>(
+	undefined,
+);
 
 function getNamespaceFromId(id: string) {
-  const idx = id.indexOf("-");
-  return idx === -1 ? id : id.slice(0, idx);
+	const idx = id.indexOf("-");
+	return idx === -1 ? id : id.slice(0, idx);
 }
 
 export function SelectionProvider({ children }: { children: React.ReactNode }) {
-  // store selections as a map: namespace -> id
-  const [selectedMap, setSelectedMap] = useState<Record<string, string | undefined>>(() => ({
-    styles: "styles-1",
-    colors: "colors-1",
-    aspect: "aspect-1",
-  }));
+	// store selections as a map: namespace -> id
+	const [selectedMap, setSelectedMap] = useState<
+		Record<string, string | undefined>
+	>(() => ({
+		styles: "styles-1",
+		colors: "colors-1",
+		aspect: "aspect-1",
+	}));
 
-  const isSelected = useCallback(
-    (id: string) => {
-      const ns = getNamespaceFromId(id);
-      return selectedMap[ns] === id;
-    },
-    [selectedMap],
-  );
+	const isSelected = useCallback(
+		(id: string) => {
+			const ns = getNamespaceFromId(id);
+			return selectedMap[ns] === id;
+		},
+		[selectedMap],
+	);
 
-  const getSelectedFor = useCallback(
-    (namespace: string) => selectedMap[namespace],
-    [selectedMap],
-  );
+	const getSelectedFor = useCallback(
+		(namespace: string) => selectedMap[namespace],
+		[selectedMap],
+	);
 
-  const select = useCallback((id: string) => {
-    const ns = getNamespaceFromId(id);
-    setSelectedMap((prev) => ({ ...prev, [ns]: id }));
-  }, []);
+	const select = useCallback((id: string) => {
+		const ns = getNamespaceFromId(id);
+		setSelectedMap((prev) => ({ ...prev, [ns]: id }));
+	}, []);
 
-  const toggle = useCallback((id: string) => {
-    const ns = getNamespaceFromId(id);
-    setSelectedMap((prev) => {
-      if (prev[ns] === id) {
-        const next = { ...prev };
-        delete next[ns];
-        return next;
-      }
-      return { ...prev, [ns]: id };
-    });
-  }, []);
+	const toggle = useCallback((id: string) => {
+		const ns = getNamespaceFromId(id);
+		setSelectedMap((prev) => {
+			if (prev[ns] === id) {
+				const next = { ...prev };
+				delete next[ns];
+				return next;
+			}
+			return { ...prev, [ns]: id };
+		});
+	}, []);
 
-  const clear = useCallback(() => {
-    setSelectedMap({});
-  }, []);
+	const clear = useCallback(() => {
+		setSelectedMap({});
+	}, []);
 
-  const selectedIds = useMemo(() => Object.values(selectedMap).filter(Boolean) as string[], [selectedMap]);
+	const selectedIds = useMemo(
+		() => Object.values(selectedMap).filter(Boolean) as string[],
+		[selectedMap],
+	);
 
-  const value: SelectionContextValue = useMemo(
-    () => ({ selectedIds, isSelected, getSelectedFor, toggle, select, clear }),
-    [selectedIds, isSelected, getSelectedFor, toggle, select, clear],
-  );
+	const value: SelectionContextValue = useMemo(
+		() => ({ selectedIds, isSelected, getSelectedFor, toggle, select, clear }),
+		[selectedIds, isSelected, getSelectedFor, toggle, select, clear],
+	);
 
-  return <SelectionContext.Provider value={value}>{children}</SelectionContext.Provider>;
+	return (
+		<SelectionContext.Provider value={value}>
+			{children}
+		</SelectionContext.Provider>
+	);
 }
 
 export function useSelection() {
-  const ctx = useContext(SelectionContext);
-  if (!ctx) {
-    throw new Error("useSelection must be used within a SelectionProvider");
-  }
-  return ctx;
+	const ctx = useContext(SelectionContext);
+	if (!ctx) {
+		throw new Error("useSelection must be used within a SelectionProvider");
+	}
+	return ctx;
 }

@@ -2,8 +2,8 @@
 
 import type { ListBlobResult } from "@vercel/blob";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useToast } from "@/components/providers/toast-provider";
 import { loadMoreImages } from "@/app/actions/load-more-images";
+import { useToast } from "@/components/providers/toast-provider";
 
 type UseInfiniteScrollOptions = {
 	initialData: ListBlobResult["blobs"];

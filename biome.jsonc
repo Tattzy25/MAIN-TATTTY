@@ -1,60 +1,60 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.7/schema.json",
-  "extends": ["ultracite/next"],
-  "formatter": {
-    "enabled": true
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "correctness": {
-        "noUnusedImports": "off"
-      }
-    }
-  },
-  "assist": {
-    "enabled": true,
-    "actions": {
-      "source": {
-        "organizeImports": {
-          "level": "on"
-        }
-      }
-    }
-  },
-  "files": {
-    "includes": [
-      "**/*",
-      "!/components/ui",
-      "!/lib/utils.ts",
-      "!/hooks/use-mobile.ts"
-    ]
-  },
-  "overrides": [
-    {
-      "includes": ["components/ui/**/*"],
-      "linter": {
-        "rules": {
-          "performance": {
-            "noNamespaceImport": "off"
-          },
-          "style": {
-            "noMagicNumbers": "off"
-          },
-          "suspicious": {
-            "noArrayIndexKey": "off"
-          },
-          "correctness": {
-            "useExhaustiveDependencies": "off"
-          },
-          "nursery": {
-            "noShadow": "off"
-          },
-          "complexity": {
-            "noExcessiveCognitiveComplexity": "off"
-          }
-        }
-      }
-    }
-  ]
+	"$schema": "https://biomejs.dev/schemas/2.2.7/schema.json",
+	"extends": ["ultracite/next"],
+	"formatter": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"correctness": {
+				"noUnusedImports": "off"
+			}
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": {
+					"level": "on"
+				}
+			}
+		}
+	},
+	"files": {
+		"includes": [
+			"**/*",
+			"!/components/ui",
+			"!/lib/utils.ts",
+			"!/hooks/use-mobile.ts"
+		]
+	},
+	"overrides": [
+		{
+			"includes": ["components/ui/**/*"],
+			"linter": {
+				"rules": {
+					"performance": {
+						"noNamespaceImport": "off"
+					},
+					"style": {
+						"noMagicNumbers": "off"
+					},
+					"suspicious": {
+						"noArrayIndexKey": "off"
+					},
+					"correctness": {
+						"useExhaustiveDependencies": "off"
+					},
+					"nursery": {
+						"noShadow": "off"
+					},
+					"complexity": {
+						"noExcessiveCognitiveComplexity": "off"
+					}
+				}
+			}
+		}
+	]
 }

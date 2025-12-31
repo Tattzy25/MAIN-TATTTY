@@ -1,7 +1,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
+import { SelectionProvider } from "@/components/providers/selection-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { SelectionProvider } from "@/components/providers/selection-provider";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
