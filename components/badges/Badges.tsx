@@ -45,7 +45,6 @@ export default function Badges({
 				</Badge>
 			))}
 
-
 			{overflow > 0 && (
 				<Badge className="px-3 py-1.5 text-base" variant="secondary">
 					+{overflow} more

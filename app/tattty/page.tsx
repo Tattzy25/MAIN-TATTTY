@@ -2,12 +2,12 @@
 
 import { TATTTY_UI_TEXT } from "@/app/tattty/constants";
 import { ScrollerHorizontal } from "@/components/horizontal-scroll";
+import Q1Modal from "@/components/Q1";
+import Q2Modal from "@/components/Q2";
 import SelectionBadges from "@/components/selection-badges";
 import { ScrollerHidden } from "@/components/verticle-scroll";
 import { ScrollerHiddenAlt } from "@/components/verticle-scroll-two";
 import { TextWordCarousel } from "@/components/word-carousel";
-import Q1Modal from "./Q1";
-import Q2Modal from "./Q2";
 
 export default function Ai02() {
 	return (

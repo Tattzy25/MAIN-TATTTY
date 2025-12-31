@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
 import { useSelection } from "@/components/providers/selection-provider";
+import { Badge } from "@/components/ui/badge";
+import CreateButton from "@/components/Create Button/CreateButton";
+import UserGenerations from "@/components/User Generations/user-generations";
 import { useBadgeLabels } from "@/hooks/use-badge-labels";
 import { useGenerator } from "@/hooks/use-generator";
 
@@ -140,7 +141,13 @@ export default function SelectionBadges() {
 	const badgeItems: {
 		id: string;
 		label: string;
-		variant?: "destructive" | "default" | "outline" | "secondary" | null | undefined;
+		variant?:
+			| "destructive"
+			| "default"
+			| "outline"
+			| "secondary"
+			| null
+			| undefined;
 	}[] = visible.slice(0, maxVisible).map((id) => {
 		const ns = id.split("-")[0];
 		const isQ = ns === "q1" || ns === "q2";
@@ -164,33 +171,30 @@ export default function SelectionBadges() {
 	return (
 		<div className="w-full max-w-2xl mx-auto mt-6">
 			<div className="flex flex-col items-center gap-4">
-				<div className="w-full flex flex-wrap items-center justify-between gap-3">
-					<div className="flex-1 min-w-0">
-						<div className="flex flex-wrap gap-2">
-							{badgeItems.map((b) => (
-								<button
-									key={b.id}
-									type="button"
-									onClick={() => handleRemove(b.id)}
-									className="inline-flex items-center space-x-2"
+				<div className="w-full flex justify-center">
+					<div className="flex flex-wrap items-center justify-center gap-3">
+						{badgeItems.map((b) => (
+							<button
+								key={b.id}
+								type="button"
+								onClick={() => handleRemove(b.id)}
+								className="inline-flex items-center h-10"
+							>
+								<Badge
+									variant={b.variant}
+									size="lg"
+									className="inline-flex items-center justify-center h-10 px-4 text-base"
 								>
-									<Badge
-										variant={b.variant}
-										size="lg"
-										className="inline-flex items-center gap-2 px-3 py-1.5 text-base"
-									>
-										<span className="select-none">{b.label}</span>
-									</Badge>
-								</button>
-							))}
-						</div>
-					</div>
+									<span className="select-none">{b.label}</span>
+								</Badge>
+							</button>
+						))}
 
-					<div className="ml-3">
+						{/* Clear button included inline with badges, matching height */}
 						<button
 							type="button"
 							onClick={handleClearAll}
-							className="inline-flex items-center px-3 py-1.5 rounded-md border bg-transparent text-sm"
+							className="inline-flex items-center h-10 px-4 rounded-md border bg-transparent text-sm"
 							aria-disabled={selectedIds.length === 0}
 						>
 							Clear
@@ -199,33 +203,18 @@ export default function SelectionBadges() {
 				</div>
 
 				<div className="w-full flex justify-center mt-2">
-					<Button
+					<CreateButton
 						onClick={handleGenerate}
 						disabled={!selectedIds.length || isGenerating}
-						size="xl"
-						className="rounded-full px-10 py-3"
-					>
-						{isGenerating ? "Inking..." : "InK Me Up"}
-					</Button>
+						isGenerating={isGenerating}
+					/>
 				</div>
 
-				{(localError || error) && (
-					<p className="text-sm text-destructive mt-1 text-center px-4">
-						{localError ?? error}
-					</p>
-				)}
-
-				{generatedUrl && (
-					<div className="mt-6 rounded-md overflow-hidden border border-muted p-2 max-w-full w-full">
-						<Image
-							src={generatedUrl}
-							alt="Generated preview"
-							width={1024}
-							height={1024}
-							className="w-full h-auto object-cover rounded"
-						/>
-					</div>
-				)}
+				<UserGenerations
+					generatedUrl={generatedUrl}
+					localError={localError}
+					error={error}
+				/>
 			</div>
 		</div>
 	);
