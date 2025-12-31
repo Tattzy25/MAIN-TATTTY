@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import Badges, { type BadgeItem } from "@/components/badges/Badges";
-import GenerateButton from "@/components/generate-button/GenerateButton";
+import { usePathname } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useSelection } from "@/components/providers/selection-provider";
 import { useBadgeLabels } from "@/hooks/use-badge-labels";
 import { useGenerator } from "@/hooks/use-generator";
@@ -27,6 +28,8 @@ export default function SelectionBadges() {
 	const { visible, labelFor, savedQTexts } = useBadgeLabels(selectedIds);
 	const { generatedUrl, isGenerating, error, generate, clearGenerated } =
 		useGenerator();
+
+	const pathname = usePathname();
 
 	const [localError, setLocalError] = useState<string | null>(null);
 	const maxVisible = 5;
@@ -56,13 +59,26 @@ export default function SelectionBadges() {
 	const handleGenerate = async () => {
 		setLocalError(null);
 
-		// Validate Q1/Q2
-		const { ok } = validateQTexts();
-		if (!ok) {
-			setLocalError(
-				"Please provide answers for Q1 and Q2 (minimum 20 characters).",
-			);
-			return;
+		// Skip Q validation on routes that don't require Q1/Q2
+		const qOptionalRoutes = [
+			"/tattty/quick-ideas",
+			"/tattty/fonts",
+			"/tattty/ink-redemption",
+			"/tattty/couples-tatttz",
+		];
+		const isQOptionalPage = pathname
+			? qOptionalRoutes.some((r) => pathname.startsWith(r))
+			: false;
+
+		if (!isQOptionalPage) {
+			// Validate Q1/Q2
+			const { ok } = validateQTexts();
+			if (!ok) {
+				setLocalError(
+					"Please provide answers for Q1 and Q2 (minimum 20 characters).",
+				);
+				return;
+			}
 		}
 
 		// Ensure feature selections exist. If any feature is missing (e.g. user cleared them),
@@ -82,20 +98,25 @@ export default function SelectionBadges() {
 		}
 
 		// If Q1/Q2 texts exist in localStorage but the user hasn't opened the Q modals
-		// on this page (so no selection was recorded), ensure we still mark q1/q2 as selected.
-		// This allows the generation flow to proceed on pages like "quick-ideas" without
-		// requiring the Q modals to be present on that page.
-		const qNamespaces: Array<"q1" | "q2"> = ["q1", "q2"];
-		qNamespaces.forEach((ns) => {
-			const saved = (savedQTexts[ns] ?? "").trim();
-			if (!getSelectedFor(ns) && saved.length >= qMin) {
-				// select the namespace key (Q selections are stored as "q1" / "q2" by the modals)
-				select(ns);
-			}
-		});
+		// on this page (so no selection was recorded), ensure we still mark q1/q2 as selected
+		// — but only when Qs are required for this page. On Q-optional pages we must NOT
+		// auto-select q1/q2 (that was causing "fake" Q badges to appear).
+		if (!isQOptionalPage) {
+			const qNamespaces: Array<"q1" | "q2"> = ["q1", "q2"];
+			qNamespaces.forEach((ns) => {
+				const saved = (savedQTexts[ns] ?? "").trim();
+				if (!getSelectedFor(ns) && saved.length >= qMin) {
+					// select the namespace key (Q selections are stored as "q1" / "q2" by the modals)
+					select(ns);
+				}
+			});
+		}
 
-		// Build final selection payload
-		const namespaces = ["styles", "colors", "aspect", "q1", "q2"];
+		// Build final selection payload. Exclude q1/q2 on pages where they're optional.
+		const namespaces = isQOptionalPage
+			? ["styles", "colors", "aspect"]
+			: ["styles", "colors", "aspect", "q1", "q2"];
+
 		const finalSelected: string[] = [];
 		for (const ns of namespaces) {
 			const s = getSelectedFor(ns);
@@ -116,11 +137,22 @@ export default function SelectionBadges() {
 	};
 
 	// Build presentational badge items
-	const badgeItems: BadgeItem[] = visible.slice(0, maxVisible).map((id) => {
+	const badgeItems: {
+		id: string;
+		label: string;
+		variant?: "destructive" | "default" | "outline" | "secondary" | null | undefined;
+	}[] = visible.slice(0, maxVisible).map((id) => {
 		const ns = id.split("-")[0];
 		const isQ = ns === "q1" || ns === "q2";
 		// ensure qText is always a string to avoid undefined/TS issues
-		const qText: string = isQ ? (savedQTexts[ns as "q1" | "q2"] ?? "") : "";
+		let qText: string = "";
+		if (isQ) {
+			if (ns === "q1") {
+				qText = savedQTexts.q1 ?? "";
+			} else {
+				qText = savedQTexts.q2 ?? "";
+			}
+		}
 		const invalidQ = isQ ? qText.trim().length < qMin : false;
 		return {
 			id,
@@ -134,11 +166,24 @@ export default function SelectionBadges() {
 			<div className="flex flex-col items-center gap-4">
 				<div className="w-full flex flex-wrap items-center justify-between gap-3">
 					<div className="flex-1 min-w-0">
-						<Badges
-							items={badgeItems}
-							onRemove={handleRemove}
-							maxVisible={maxVisible}
-						/>
+						<div className="flex flex-wrap gap-2">
+							{badgeItems.map((b) => (
+								<button
+									key={b.id}
+									type="button"
+									onClick={() => handleRemove(b.id)}
+									className="inline-flex items-center space-x-2"
+								>
+									<Badge
+										variant={b.variant}
+										size="lg"
+										className="inline-flex items-center gap-2 px-3 py-1.5 text-base"
+									>
+										<span className="select-none">{b.label}</span>
+									</Badge>
+								</button>
+							))}
+						</div>
 					</div>
 
 					<div className="ml-3">
@@ -154,11 +199,14 @@ export default function SelectionBadges() {
 				</div>
 
 				<div className="w-full flex justify-center mt-2">
-					<GenerateButton
+					<Button
 						onClick={handleGenerate}
-						loading={isGenerating}
-						disabled={!selectedIds.length}
-					/>
+						disabled={!selectedIds.length || isGenerating}
+						size="xl"
+						className="rounded-full px-10 py-3"
+					>
+						{isGenerating ? "Inking..." : "InK Me Up"}
+					</Button>
 				</div>
 
 				{(localError || error) && (
